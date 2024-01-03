@@ -37,8 +37,8 @@ const EnterPasswordScreen = () => {
         style={{marginTop: 16}}
         label="Mật khẩu"
         contentStyle={{backgroundColor: 'white'}}
-        underlineColor="lightgreen"
-        activeUnderlineColor="lightgreen"
+        underlineColor="#a5ce3a"
+        activeUnderlineColor="#a5ce3a"
         textColor="black"
         onChangeText={text => setPassword(text)}
         error={error.length > 0}
@@ -52,7 +52,7 @@ const EnterPasswordScreen = () => {
         style={{margin: 20}}
         onPress={onPress}
         mode="contained"
-        buttonColor="lightgreen"
+        buttonColor="#a5ce3a"
         textColor="black">
         OK
       </Button>

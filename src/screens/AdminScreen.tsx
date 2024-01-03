@@ -89,7 +89,7 @@ const AdminScreen = () => {
             style={{margin: 20}}
             onPress={onSubmitPress}
             mode="contained"
-            buttonColor="lightgreen"
+            buttonColor="#a5ce3a"
             textColor="black">
             Thay đổi
           </Button>

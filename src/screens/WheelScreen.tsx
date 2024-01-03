@@ -191,7 +191,7 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
         disabled={isAnimating}
         onPress={onStartPress}
         mode="contained"
-        buttonColor="lightgreen"
+        buttonColor="#a5ce3a"
         textColor="black">
         Bắt đầu
       </Button>
@@ -229,6 +229,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     margin: 20,
     right: 0,
-    backgroundColor: 'lightgreen',
+    backgroundColor: '#a5ce3a',
   },
 });
