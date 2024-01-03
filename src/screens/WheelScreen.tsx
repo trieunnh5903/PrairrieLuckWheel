@@ -151,9 +151,13 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
           />
         </Modal>
       </Portal>
-      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+      <View
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
         <Animated.Image
-          source={require('../assets/image/VQMMExport.png')}
+          source={require('../assets/image/bg_vqmm.png')}
           style={[
             {
               width: 300,
@@ -164,7 +168,23 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
             wheelAnimatedStyle,
           ]}
         />
-        <View style={styles.triangleContainer} />
+        <View
+          style={{
+            position: 'absolute',
+            transform: [
+              {
+                translateY: -15,
+              },
+            ],
+          }}>
+          <Image
+            style={{
+              width: 150,
+              height: 150,
+            }}
+            source={require('../assets/image/kim-vqmm.png')}
+          />
+        </View>
       </View>
       <Button
         style={{margin: 20}}
@@ -210,18 +230,5 @@ const styles = StyleSheet.create({
     margin: 20,
     right: 0,
     backgroundColor: 'lightgreen',
-  },
-  triangleContainer: {
-    position: 'absolute',
-    top: -10,
-    width: 0,
-    height: 0,
-    borderStyle: 'solid',
-    borderLeftWidth: 20,
-    borderRightWidth: 20,
-    borderTopWidth: 30,
-    borderTopColor: 'red',
-    borderLeftColor: 'transparent',
-    borderRightColor: 'transparent',
   },
 });
