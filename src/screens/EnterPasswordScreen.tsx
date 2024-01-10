@@ -4,12 +4,12 @@ import {Button, TextInput} from 'react-native-paper';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import {NavigationProps} from '../type/navigation.type';
 import {useAppDispatch, useAppSelector} from '../redux/store';
-import {savePassword} from '../redux/appSlice';
+import {changeIsSavedPassword, savePassword} from '../redux/appSlice';
 
 const EnterPasswordScreen = () => {
   const navigation = useNavigation<NavigationProps>();
   const dispatch = useAppDispatch();
-  const currPassword = useAppSelector(state => state.app.password);
+  const currPassword = useAppSelector(state => state.password);
 
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -20,6 +20,7 @@ const EnterPasswordScreen = () => {
     }
     setError('');
     dispatch(savePassword(password));
+    dispatch(changeIsSavedPassword(true));
   };
 
   useEffect(() => {

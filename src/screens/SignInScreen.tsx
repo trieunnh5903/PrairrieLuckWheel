@@ -7,7 +7,7 @@ import {useAppSelector} from '../redux/store';
 
 const EnterPasswordScreen = () => {
   const navigation = useNavigation<NavigationProps>();
-  const currPassword = useAppSelector(state => state.app.password);
+  const currPassword = useAppSelector(state => state.password);
 
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');

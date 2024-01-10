@@ -9,7 +9,7 @@ import {savePassword} from '../redux/appSlice';
 const EnterPasswordScreen = () => {
   const navigation = useNavigation<NavigationProps>();
   const dispatch = useAppDispatch();
-  const currPassword = useAppSelector(state => state.app.password);
+  const currPassword = useAppSelector(state => state.password);
 
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');

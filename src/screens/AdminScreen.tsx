@@ -15,13 +15,22 @@ import {changeRates} from '../redux/appSlice';
 const AdminScreen = () => {
   const navigation = useNavigation<NavigationProps>();
   const [errorMess, setErrorMess] = useState('');
-  const currRates = useAppSelector(state => state.app.rates);
+  const currRates = useAppSelector(state => state.rates);
   const [rates, setRates] = useState(currRates);
   const dispatch = useAppDispatch();
 
   const onSubmitPress = () => {
     const isValid = validate();
     if (isValid) {
+      const unluckyRate =
+        (100 - rates.reduce((pre, curr) => pre + curr, 0)) / 4;
+      console.log(unluckyRate);
+      let updateRates = [...rates];
+      updateRates[1] = unluckyRate;
+      updateRates[3] = unluckyRate;
+      updateRates[5] = unluckyRate;
+      updateRates[7] = unluckyRate;
+      // console.log(updateRates);
       dispatch(changeRates(rates));
       navigation.navigate('Wheel');
     }
@@ -35,7 +44,8 @@ const AdminScreen = () => {
       }
     }
 
-    if (rates.reduce((curr, next) => curr + next, 0) === 0) {
+    const totalRate = rates.reduce((curr, next) => curr + next, 0);
+    if (totalRate === 0 || totalRate > 100) {
       setErrorMess('Tỉ lệ không đúng');
       return false;
     }
@@ -60,7 +70,7 @@ const AdminScreen = () => {
             <DataTable.Header>
               <DataTable.Title
                 textStyle={{color: 'black', fontSize: 18, fontWeight: 'bold'}}>
-                Ô số
+                Ô
               </DataTable.Title>
               <DataTable.Title
                 numeric
@@ -69,21 +79,79 @@ const AdminScreen = () => {
               </DataTable.Title>
             </DataTable.Header>
 
-            {rates.map((item, index) => (
-              <DataTable.Row key={index}>
-                <DataTable.Cell textStyle={{color: 'black', fontSize: 16}}>
-                  {index + 1}
-                </DataTable.Cell>
-                <DataTable.Cell numeric>
-                  <TextInput
-                    style={{color: 'black'}}
-                    keyboardType="number-pad"
-                    onChangeText={value => onChangeText(value, index)}
-                    defaultValue={rates[index].toString()}
-                  />
-                </DataTable.Cell>
-              </DataTable.Row>
-            ))}
+            {rates.map((item, index) => {
+              if (index === 0) {
+                return (
+                  <DataTable.Row key={index}>
+                    <DataTable.Cell textStyle={{color: 'black', fontSize: 16}}>
+                      Bánh cá 1
+                    </DataTable.Cell>
+                    <DataTable.Cell numeric>
+                      <TextInput
+                        style={{color: 'black'}}
+                        keyboardType="number-pad"
+                        onChangeText={value => onChangeText(value, index)}
+                        defaultValue={rates[index].toString()}
+                      />
+                    </DataTable.Cell>
+                  </DataTable.Row>
+                );
+              }
+
+              if (index === 2) {
+                return (
+                  <DataTable.Row key={index}>
+                    <DataTable.Cell textStyle={{color: 'black', fontSize: 16}}>
+                      Bánh quy
+                    </DataTable.Cell>
+                    <DataTable.Cell numeric>
+                      <TextInput
+                        style={{color: 'black'}}
+                        keyboardType="number-pad"
+                        onChangeText={value => onChangeText(value, index)}
+                        defaultValue={rates[index].toString()}
+                      />
+                    </DataTable.Cell>
+                  </DataTable.Row>
+                );
+              }
+
+              if (index === 4) {
+                return (
+                  <DataTable.Row key={index}>
+                    <DataTable.Cell textStyle={{color: 'black', fontSize: 16}}>
+                      Bánh cá 2
+                    </DataTable.Cell>
+                    <DataTable.Cell numeric>
+                      <TextInput
+                        style={{color: 'black'}}
+                        keyboardType="number-pad"
+                        onChangeText={value => onChangeText(value, index)}
+                        defaultValue={rates[index].toString()}
+                      />
+                    </DataTable.Cell>
+                  </DataTable.Row>
+                );
+              }
+
+              if (index === 6) {
+                return (
+                  <DataTable.Row key={index}>
+                    <DataTable.Cell textStyle={{color: 'black', fontSize: 16}}>
+                      Ốc quế
+                    </DataTable.Cell>
+                    <DataTable.Cell numeric>
+                      <TextInput
+                        style={{color: 'black'}}
+                        keyboardType="number-pad"
+                        onChangeText={value => onChangeText(value, index)}
+                        defaultValue={rates[index].toString()}
+                      />
+                    </DataTable.Cell>
+                  </DataTable.Row>
+                );
+              }
+            })}
           </DataTable>
           <Button
             style={{margin: 20}}

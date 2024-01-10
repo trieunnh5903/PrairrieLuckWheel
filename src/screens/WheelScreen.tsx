@@ -1,33 +1,44 @@
-import {Alert, Dimensions, Image, StyleSheet, View} from 'react-native';
+import {
+  Alert,
+  Dimensions,
+  Image,
+  Pressable,
+  StyleSheet,
+  View,
+} from 'react-native';
 import React, {useState} from 'react';
 import Animated, {
   Easing,
+  cancelAnimation,
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
+  withDelay,
+  withRepeat,
+  withSequence,
   withTiming,
 } from 'react-native-reanimated';
-import {Button, FAB, Modal, Portal, Text} from 'react-native-paper';
+import {FAB, Modal, Portal, Text} from 'react-native-paper';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../type/navigation.type';
 import {useAppSelector} from '../redux/store';
 
 const prizes = [
-  {id: 1, name: 'Giải nhất', angle: 0},
-  {id: 2, name: 'Giải 2', angle: 45},
-  {id: 3, name: 'Giải 3', angle: 90},
-  {id: 4, name: 'Giải 4', angle: 135},
-  {id: 5, name: 'Giải 5', angle: 180},
-  {id: 6, name: 'Giải 6', angle: 225},
-  {id: 7, name: 'Giải 7', angle: 270},
-  {id: 8, name: 'Giải 8', angle: 315},
+  {id: 1, name: 'Bánh cá', angle: 0},
+  {id: 2, name: 'Chúc bạn may mắn lần sau', angle: 45},
+  {id: 3, name: 'Bánh quy', angle: 90},
+  {id: 4, name: 'Chúc bạn may mắn lần sau', angle: 135},
+  {id: 5, name: 'Bánh cá', angle: 180},
+  {id: 6, name: 'Chúc bạn may mắn lần sau', angle: 225},
+  {id: 7, name: 'Ốc quế', angle: 270},
+  {id: 8, name: 'Chúc bạn may mắn lần sau', angle: 315},
 ];
 
 const {width: screen_width} = Dimensions.get('window');
 
 type WheelScreenProps = NativeStackScreenProps<RootStackParamList, 'Wheel'>;
 const WheelScreen = ({navigation}: WheelScreenProps) => {
-  const rates = useAppSelector(state => state.app.rates);
+  const rates = useAppSelector(state => state.rates);
   const rotationValue = useSharedValue(0);
   const totalRate = rates.reduce((acc, rate) => acc + rate, 0);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -124,6 +135,28 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
     };
   });
 
+  const buttonSpin = useSharedValue(1);
+  React.useEffect(() => {
+    if (isAnimating) {
+      cancelAnimation(buttonSpin);
+    } else {
+      buttonSpin.value = 1;
+      buttonSpin.value = withRepeat(
+        withDelay(
+          1000,
+          withSequence(withTiming(0.9), withTiming(1, {duration: 900})),
+        ),
+        -1,
+      );
+    }
+  }, [buttonSpin, isAnimating]);
+
+  const spinAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{scale: buttonSpin.value}],
+    };
+  });
+
   const onSettingPress = () => navigation.navigate('SignIn');
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -168,25 +201,31 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
             wheelAnimatedStyle,
           ]}
         />
-        <View
+        <Pressable
+          disabled={isAnimating}
+          onPress={onStartPress}
           style={{
             position: 'absolute',
             transform: [
               {
                 translateY: -15,
               },
+              {scale: 0.9},
             ],
           }}>
-          <Image
-            style={{
-              width: 150,
-              height: 150,
-            }}
+          <Animated.Image
+            style={[
+              {
+                width: 150,
+                height: 150,
+              },
+              spinAnimatedStyle,
+            ]}
             source={require('../assets/image/kim-vqmm.png')}
           />
-        </View>
+        </Pressable>
       </View>
-      <Button
+      {/* <Button
         style={{margin: 20}}
         disabled={isAnimating}
         onPress={onStartPress}
@@ -194,7 +233,7 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
         buttonColor="#a5ce3a"
         textColor="black">
         Bắt đầu
-      </Button>
+      </Button> */}
 
       <FAB
         mode="flat"
