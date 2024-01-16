@@ -10,7 +10,7 @@ interface AppState {
 
 // Define the initial state using that type
 const initialState: AppState = {
-  rates: [0, 0, 0, 0, 0, 0, 0, 0],
+  rates: [0, 25, 0, 25, 0, 25, 0, 25],
   isSavedPassword: false,
   password: null,
 };

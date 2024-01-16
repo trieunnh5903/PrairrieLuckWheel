@@ -18,27 +18,28 @@ import Animated, {
   withSequence,
   withTiming,
 } from 'react-native-reanimated';
-import {FAB, Modal, Portal, Text} from 'react-native-paper';
+import {Modal, Portal, Text} from 'react-native-paper';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../type/navigation.type';
 import {useAppSelector} from '../redux/store';
 
+type WheelScreenProps = NativeStackScreenProps<RootStackParamList, 'Wheel'>;
 const prizes = [
-  {id: 1, name: 'Bánh cá', angle: 0},
+  {id: 1, name: 'Bánh cá nhân sầu riêng', angle: 0},
   {id: 2, name: 'Chúc bạn may mắn lần sau', angle: 45},
-  {id: 3, name: 'Bánh quy', angle: 90},
+  {id: 3, name: 'Bánh đồng xu', angle: 90},
   {id: 4, name: 'Chúc bạn may mắn lần sau', angle: 135},
-  {id: 5, name: 'Bánh cá', angle: 180},
+  {id: 5, name: 'Bánh cá nhân kem', angle: 180},
   {id: 6, name: 'Chúc bạn may mắn lần sau', angle: 225},
-  {id: 7, name: 'Ốc quế', angle: 270},
+  {id: 7, name: 'Phomai que', angle: 270},
   {id: 8, name: 'Chúc bạn may mắn lần sau', angle: 315},
 ];
-
 const {width: screen_width} = Dimensions.get('window');
 
-type WheelScreenProps = NativeStackScreenProps<RootStackParamList, 'Wheel'>;
 const WheelScreen = ({navigation}: WheelScreenProps) => {
+  const [pressCount, setPressCount] = useState(0);
   const rates = useAppSelector(state => state.rates);
+
   const rotationValue = useSharedValue(0);
   const totalRate = rates.reduce((acc, rate) => acc + rate, 0);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -157,7 +158,16 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
     };
   });
 
-  const onSettingPress = () => navigation.navigate('SignIn');
+  const onSettingPress = () => {
+    setPressCount(pressCount + 1);
+    if (pressCount === 3) {
+      navigation.navigate('SignIn');
+    }
+
+    setTimeout(() => {
+      setPressCount(0);
+    }, 3000);
+  };
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Portal>
@@ -225,23 +235,8 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
           />
         </Pressable>
       </View>
-      {/* <Button
-        style={{margin: 20}}
-        disabled={isAnimating}
-        onPress={onStartPress}
-        mode="contained"
-        buttonColor="#a5ce3a"
-        textColor="black">
-        Bắt đầu
-      </Button> */}
 
-      <FAB
-        mode="flat"
-        icon="cog-outline"
-        style={styles.fab}
-        color="black"
-        onPress={onSettingPress}
-      />
+      <Pressable style={styles.fab} onPress={onSettingPress} />
     </View>
   );
 };
@@ -264,9 +259,11 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   fab: {
+    opacity: 0,
     position: 'absolute',
     bottom: 0,
-    margin: 20,
+    width: '30%',
+    aspectRatio: 1,
     right: 0,
     backgroundColor: '#a5ce3a',
   },

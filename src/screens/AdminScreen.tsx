@@ -2,6 +2,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Pressable,
+  StyleSheet,
   TextInput,
   View,
 } from 'react-native';
@@ -22,21 +23,13 @@ const AdminScreen = () => {
   const onSubmitPress = () => {
     const isValid = validate();
     if (isValid) {
-      const unluckyRate =
-        (100 - rates.reduce((pre, curr) => pre + curr, 0)) / 4;
-      console.log(unluckyRate);
-      let updateRates = [...rates];
-      updateRates[1] = unluckyRate;
-      updateRates[3] = unluckyRate;
-      updateRates[5] = unluckyRate;
-      updateRates[7] = unluckyRate;
-      // console.log(updateRates);
       dispatch(changeRates(rates));
       navigation.navigate('Wheel');
     }
   };
 
   const validate = () => {
+    // CHECK NUMBER
     for (let i = 0; i < rates.length; i++) {
       if (isNaN(rates[i])) {
         setErrorMess('Hãy nhập giá trị số');
@@ -44,9 +37,17 @@ const AdminScreen = () => {
       }
     }
 
-    const totalRate = rates.reduce((curr, next) => curr + next, 0);
-    if (totalRate === 0 || totalRate > 100) {
-      setErrorMess('Tỉ lệ không đúng');
+    // CHECK MIN MAX RATE
+    let totalRate = 0;
+
+    for (let i = 0; i < rates.length; i++) {
+      if (i % 2 === 0) {
+        // Chỉ số chẵn
+        totalRate += rates[i];
+      }
+    }
+    if (totalRate > 50) {
+      setErrorMess('Tổng tỉ lệ phần quà không quá 50%');
       return false;
     }
 
@@ -57,10 +58,20 @@ const AdminScreen = () => {
   const onChangeText = (text: string, index: number) => {
     let newRate = [...rates];
     newRate[index] = Number(text);
+    let totalRate = 0;
+    for (let i = 0; i < newRate.length; i++) {
+      if (i % 2 === 0) {
+        // Chỉ số chẵn
+        totalRate += newRate[i];
+      }
+    }
+    const unluckyRate = (100 - totalRate) / 4;
+    newRate[1] = unluckyRate;
+    newRate[3] = unluckyRate;
+    newRate[5] = unluckyRate;
+    newRate[7] = unluckyRate;
     setRates(newRate);
   };
-
-  console.log(rates);
 
   return (
     <KeyboardAvoidingView onResponderStart={() => console.log('start')}>
@@ -68,13 +79,8 @@ const AdminScreen = () => {
         <View style={{padding: 20}}>
           <DataTable>
             <DataTable.Header>
-              <DataTable.Title
-                textStyle={{color: 'black', fontSize: 18, fontWeight: 'bold'}}>
-                Ô
-              </DataTable.Title>
-              <DataTable.Title
-                numeric
-                textStyle={{color: 'black', fontSize: 18, fontWeight: 'bold'}}>
+              <DataTable.Title textStyle={styles.textTitle}>Ô</DataTable.Title>
+              <DataTable.Title numeric textStyle={styles.textTitle}>
                 Tỉ lệ (%)
               </DataTable.Title>
             </DataTable.Header>
@@ -82,13 +88,46 @@ const AdminScreen = () => {
             {rates.map((item, index) => {
               if (index === 0) {
                 return (
-                  <DataTable.Row key={index}>
-                    <DataTable.Cell textStyle={{color: 'black', fontSize: 16}}>
-                      Bánh cá 1
+                  <DataTable.Row
+                    key={index}
+                    style={
+                      errorMess
+                        ? {borderBottomColor: 'red', borderBottomWidth: 1}
+                        : {}
+                    }>
+                    <DataTable.Cell
+                      style={{
+                        flex: 4,
+                      }}
+                      textStyle={styles.textBody}>
+                      Bánh cá nhân kem sầu riêng
                     </DataTable.Cell>
                     <DataTable.Cell numeric>
                       <TextInput
                         style={{color: 'black'}}
+                        keyboardType="number-pad"
+                        onChangeText={value => onChangeText(value, index)}
+                        value={rates[index].toString()}
+                      />
+                    </DataTable.Cell>
+                  </DataTable.Row>
+                );
+              }
+
+              if (index === 1) {
+                return (
+                  <DataTable.Row key={index}>
+                    <DataTable.Cell
+                      style={{
+                        flex: 4,
+                      }}
+                      textStyle={[styles.textBody, {color: 'gray'}]}>
+                      Chúc may mắn lần sau
+                    </DataTable.Cell>
+                    <DataTable.Cell numeric>
+                      <TextInput
+                        editable={false}
+                        style={{color: 'gray'}}
                         keyboardType="number-pad"
                         onChangeText={value => onChangeText(value, index)}
                         defaultValue={rates[index].toString()}
@@ -100,13 +139,46 @@ const AdminScreen = () => {
 
               if (index === 2) {
                 return (
-                  <DataTable.Row key={index}>
-                    <DataTable.Cell textStyle={{color: 'black', fontSize: 16}}>
-                      Bánh quy
+                  <DataTable.Row
+                    key={index}
+                    style={
+                      errorMess
+                        ? {borderBottomColor: 'red', borderBottomWidth: 1}
+                        : {}
+                    }>
+                    <DataTable.Cell
+                      style={{
+                        flex: 4,
+                      }}
+                      textStyle={styles.textBody}>
+                      Bánh đồng xu
                     </DataTable.Cell>
                     <DataTable.Cell numeric>
                       <TextInput
                         style={{color: 'black'}}
+                        keyboardType="number-pad"
+                        onChangeText={value => onChangeText(value, index)}
+                        defaultValue={rates[index].toString()}
+                      />
+                    </DataTable.Cell>
+                  </DataTable.Row>
+                );
+              }
+
+              if (index === 3) {
+                return (
+                  <DataTable.Row key={index}>
+                    <DataTable.Cell
+                      style={{
+                        flex: 4,
+                      }}
+                      textStyle={[styles.textBody, {color: 'gray'}]}>
+                      Chúc may mắn lần sau
+                    </DataTable.Cell>
+                    <DataTable.Cell numeric>
+                      <TextInput
+                        editable={false}
+                        style={{color: 'gray'}}
                         keyboardType="number-pad"
                         onChangeText={value => onChangeText(value, index)}
                         defaultValue={rates[index].toString()}
@@ -118,9 +190,19 @@ const AdminScreen = () => {
 
               if (index === 4) {
                 return (
-                  <DataTable.Row key={index}>
-                    <DataTable.Cell textStyle={{color: 'black', fontSize: 16}}>
-                      Bánh cá 2
+                  <DataTable.Row
+                    key={index}
+                    style={
+                      errorMess
+                        ? {borderBottomColor: 'red', borderBottomWidth: 1}
+                        : {}
+                    }>
+                    <DataTable.Cell
+                      style={{
+                        flex: 4,
+                      }}
+                      textStyle={{color: 'black', fontSize: 16}}>
+                      Bánh cá nhân kem trắng
                     </DataTable.Cell>
                     <DataTable.Cell numeric>
                       <TextInput
@@ -134,15 +216,71 @@ const AdminScreen = () => {
                 );
               }
 
-              if (index === 6) {
+              if (index === 5) {
                 return (
                   <DataTable.Row key={index}>
-                    <DataTable.Cell textStyle={{color: 'black', fontSize: 16}}>
-                      Ốc quế
+                    <DataTable.Cell
+                      style={{
+                        flex: 4,
+                      }}
+                      textStyle={[styles.textBody, {color: 'gray'}]}>
+                      Chúc may mắn lần sau
+                    </DataTable.Cell>
+                    <DataTable.Cell numeric>
+                      <TextInput
+                        editable={false}
+                        style={{color: 'gray'}}
+                        keyboardType="number-pad"
+                        onChangeText={value => onChangeText(value, index)}
+                        defaultValue={rates[index].toString()}
+                      />
+                    </DataTable.Cell>
+                  </DataTable.Row>
+                );
+              }
+
+              if (index === 6) {
+                return (
+                  <DataTable.Row
+                    key={index}
+                    style={
+                      errorMess
+                        ? {borderBottomColor: 'red', borderBottomWidth: 1}
+                        : {}
+                    }>
+                    <DataTable.Cell
+                      style={{
+                        flex: 4,
+                      }}
+                      textStyle={{color: 'black', fontSize: 16}}>
+                      Phomai que
                     </DataTable.Cell>
                     <DataTable.Cell numeric>
                       <TextInput
                         style={{color: 'black'}}
+                        keyboardType="number-pad"
+                        onChangeText={value => onChangeText(value, index)}
+                        defaultValue={rates[index].toString()}
+                      />
+                    </DataTable.Cell>
+                  </DataTable.Row>
+                );
+              }
+
+              if (index === 7) {
+                return (
+                  <DataTable.Row key={index}>
+                    <DataTable.Cell
+                      style={{
+                        flex: 4,
+                      }}
+                      textStyle={[styles.textBody, {color: 'gray'}]}>
+                      Chúc may mắn lần sau
+                    </DataTable.Cell>
+                    <DataTable.Cell numeric>
+                      <TextInput
+                        editable={false}
+                        style={{color: 'gray'}}
                         keyboardType="number-pad"
                         onChangeText={value => onChangeText(value, index)}
                         defaultValue={rates[index].toString()}
@@ -161,7 +299,13 @@ const AdminScreen = () => {
             textColor="black">
             Thay đổi
           </Button>
-          <Text style={{color: 'red', fontSize: 16, fontWeight: 'bold'}}>
+          <Text
+            style={{
+              color: 'red',
+              fontSize: 16,
+              fontWeight: 'bold',
+              textAlign: 'center',
+            }}>
             {errorMess}
           </Text>
         </View>
@@ -171,3 +315,34 @@ const AdminScreen = () => {
 };
 
 export default AdminScreen;
+
+const styles = StyleSheet.create({
+  textBody: {
+    color: 'black',
+    fontSize: 16,
+  },
+
+  textTitle: {
+    color: 'black',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+
+  modal: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    margin: 16,
+    borderRadius: 20,
+    padding: 16,
+  },
+  fab: {
+    opacity: 0,
+    position: 'absolute',
+    bottom: 0,
+    width: '30%',
+    aspectRatio: 1,
+    right: 0,
+    backgroundColor: '#a5ce3a',
+  },
+});
