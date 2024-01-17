@@ -100,7 +100,7 @@ const AdminScreen = () => {
                         flex: 4,
                       }}
                       textStyle={styles.textBody}>
-                      Bánh cá nhân kem sầu riêng
+                      Bánh cá kem sầu riêng
                     </DataTable.Cell>
                     <DataTable.Cell numeric>
                       <TextInput
@@ -202,7 +202,7 @@ const AdminScreen = () => {
                         flex: 4,
                       }}
                       textStyle={{color: 'black', fontSize: 16}}>
-                      Bánh cá nhân kem trắng
+                      Bánh cá kem nhãn
                     </DataTable.Cell>
                     <DataTable.Cell numeric>
                       <TextInput

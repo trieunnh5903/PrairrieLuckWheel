@@ -25,11 +25,11 @@ import {useAppSelector} from '../redux/store';
 
 type WheelScreenProps = NativeStackScreenProps<RootStackParamList, 'Wheel'>;
 const prizes = [
-  {id: 1, name: 'Bánh cá nhân sầu riêng', angle: 0},
+  {id: 1, name: 'Bánh cá kem sầu riêng', angle: 0},
   {id: 2, name: 'Chúc bạn may mắn lần sau', angle: 45},
   {id: 3, name: 'Bánh đồng xu', angle: 90},
   {id: 4, name: 'Chúc bạn may mắn lần sau', angle: 135},
-  {id: 5, name: 'Bánh cá nhân kem', angle: 180},
+  {id: 5, name: 'Bánh cá kem nhãn', angle: 180},
   {id: 6, name: 'Chúc bạn may mắn lần sau', angle: 225},
   {id: 7, name: 'Phomai que', angle: 270},
   {id: 8, name: 'Chúc bạn may mắn lần sau', angle: 315},
