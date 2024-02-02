@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   Keyboard,
   KeyboardAvoidingView,
@@ -13,20 +14,28 @@ import {Button, DataTable, Text} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationProps} from '../type/navigation.type';
 import {useAppDispatch, useAppSelector} from '../redux/store';
-import {changeRates} from '../redux/appSlice';
+import {changeImageRotation, changeRates} from '../redux/appSlice';
 import {screen_width} from '../constants';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 const AdminScreen = () => {
   const navigation = useNavigation<NavigationProps>();
   const [errorMess, setErrorMess] = useState('');
   const currRates = useAppSelector(state => state.rates);
+  const imageRoration = useAppSelector(state => state.imageRotation);
   const [rates, setRates] = useState(currRates);
   const dispatch = useAppDispatch();
+  const [rotationImage, setRotationImage] = useState<string | undefined>(
+    imageRoration,
+  );
 
   const onSubmitPress = () => {
     const isValid = validate();
     if (isValid) {
       dispatch(changeRates(rates));
+      if (rotationImage) {
+        dispatch(changeImageRotation(rotationImage));
+      }
       navigation.navigate('Wheel');
     }
   };
@@ -36,6 +45,7 @@ const AdminScreen = () => {
     for (let i = 0; i < rates.length; i++) {
       if (isNaN(rates[i])) {
         setErrorMess('Hãy nhập giá trị số');
+        Alert.alert('', 'Tỉ lệ là giá trị số');
         return false;
       }
     }
@@ -51,10 +61,17 @@ const AdminScreen = () => {
     }
     if (totalRate > 50) {
       setErrorMess('Tổng tỉ lệ phần quà không quá 50%');
+      Alert.alert('', 'Tổng tỉ lệ phần quà không quá 50%');
+      return false;
+    }
+
+    if (!rotationImage) {
+      Alert.alert('', 'Ảnh vòng quay đang trống');
       return false;
     }
 
     setErrorMess('');
+
     return true;
   };
 
@@ -76,18 +93,43 @@ const AdminScreen = () => {
     setRates(newRate);
   };
 
+  const handleChangeImageSpin = async () => {
+    const {assets} = await launchImageLibrary({mediaType: 'photo', quality: 1});
+    if (assets) {
+      const uri = assets[0].uri;
+      console.log('uri', uri);
+      console.log('assets', assets);
+      setRotationImage(uri);
+    }
+  };
   return (
-    <KeyboardAvoidingView onResponderStart={() => console.log('start')}>
-      <Pressable
-        style={{backgroundColor: 'white'}}
-        onPress={() => Keyboard.dismiss()}>
-        <ScrollView>
+    <KeyboardAvoidingView behavior="padding">
+      <ScrollView>
+        <Pressable
+          style={{backgroundColor: 'white'}}
+          onPress={() => Keyboard.dismiss()}>
           <View style={{padding: 20}}>
+            <Text
+              style={{
+                color: 'black',
+                fontWeight: 'bold',
+                fontSize: 18,
+              }}>
+              Tỉ lệ
+            </Text>
+            <Image
+              source={require('../assets/image/tutorial.png')}
+              resizeMode="contain"
+              style={{width: screen_width * 0.6, height: screen_width * 0.6}}
+            />
             {/* tabel */}
             <DataTable>
               <DataTable.Header>
                 <DataTable.Title textStyle={styles.textTitle}>
                   Ô
+                </DataTable.Title>
+                <DataTable.Title textStyle={styles.textTitle}>
+                  Tên phần thưởng
                 </DataTable.Title>
                 <DataTable.Title numeric textStyle={styles.textTitle}>
                   Tỉ lệ (%)
@@ -109,7 +151,7 @@ const AdminScreen = () => {
                           flex: 4,
                         }}
                         textStyle={styles.textBody}>
-                        Bánh cá kem sầu riêng
+                        Số 1
                       </DataTable.Cell>
                       <DataTable.Cell numeric>
                         <TextInput
@@ -301,44 +343,59 @@ const AdminScreen = () => {
               })}
             </DataTable>
 
-            <Text
-              style={{
-                color: 'red',
-                fontSize: 16,
-                fontWeight: 'bold',
-                textAlign: 'center',
-              }}>
-              {errorMess}
-            </Text>
-
             {/* img spin */}
             <Text
               style={{
                 color: 'black',
                 fontWeight: 'bold',
                 fontSize: 18,
+                marginTop: 20,
               }}>
               Hình ảnh vòng quay
             </Text>
 
-            <Image
-              source={require('../assets/image/bg_vqmm.png')}
-              resizeMode="contain"
+            <View
               style={{
                 width: screen_width * 0.6,
                 height: screen_width * 0.6,
                 marginTop: 20,
-              }}
-            />
+                borderWidth: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 6,
+                borderColor: 'lightgray',
+              }}>
+              {rotationImage ? (
+                <Image
+                  source={{uri: rotationImage}}
+                  resizeMode="contain"
+                  style={{
+                    width: screen_width * 0.6,
+                    height: screen_width * 0.6,
+                  }}
+                />
+              ) : (
+                <Text
+                  style={{
+                    color: 'black',
+                    fontWeight: 'bold',
+                    fontSize: 14,
+                  }}>
+                  Trống
+                </Text>
+              )}
+            </View>
 
             <Button
-              style={{margin: 20, alignSelf: 'flex-start'}}
+              onPress={handleChangeImageSpin}
+              style={{marginVertical: 20, alignSelf: 'flex-start'}}
               mode="contained"
               buttonColor="#a5ce3a"
               textColor="black">
               Thay đổi
             </Button>
 
+            {/* submit */}
             <Button
               style={{margin: 20}}
               onPress={onSubmitPress}
@@ -348,8 +405,8 @@ const AdminScreen = () => {
               Đồng ý
             </Button>
           </View>
-        </ScrollView>
-      </Pressable>
+        </Pressable>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };

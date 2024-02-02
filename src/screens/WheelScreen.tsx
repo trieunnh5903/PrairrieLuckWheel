@@ -40,7 +40,7 @@ const {width: screen_width} = Dimensions.get('window');
 const WheelScreen = ({navigation}: WheelScreenProps) => {
   const [pressCount, setPressCount] = useState(0);
   const rates = useAppSelector(state => state.rates);
-
+  const rotateImage = useAppSelector(state => state.imageRotation);
   const rotationValue = useSharedValue(0);
   const totalRate = rates.reduce((acc, rate) => acc + rate, 0);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -159,6 +159,9 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
   });
 
   const onSettingPress = () => {
+    if (isAnimating) {
+      return;
+    }
     setPressCount(pressCount + 1);
     if (pressCount === 3) {
       navigation.navigate('SignIn');
@@ -200,7 +203,24 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Animated.Image
+        {rotateImage ? (
+          <Animated.Image
+            source={{uri: rotateImage}}
+            style={[
+              {
+                width: screen_width * 0.8,
+                height: screen_width * 0.8,
+                borderRadius: screen_width,
+                backgroundColor: 'rgba(0,0,0,0.1)',
+              },
+              wheelAnimatedStyle,
+            ]}
+          />
+        ) : (
+          <Text>Trống</Text>
+        )}
+
+        {/* <Animated.Image
           source={require('../assets/image/bg_vqmm.png')}
           style={[
             {
@@ -211,7 +231,7 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
             },
             wheelAnimatedStyle,
           ]}
-        />
+        /> */}
         <Pressable
           disabled={isAnimating}
           onPress={onStartPress}
