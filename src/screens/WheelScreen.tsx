@@ -34,6 +34,7 @@ const prizes = [
   {id: 7, name: 'Phomai que', angle: 270},
   {id: 8, name: 'Chúc bạn may mắn lần sau', angle: 315},
 ];
+
 const {width: screen_width} = Dimensions.get('window');
 
 const WheelScreen = ({navigation}: WheelScreenProps) => {
@@ -83,7 +84,6 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
       10 * 360 - degressRotate,
       {
         duration: 10 * 1000,
-        // easing: Easing.bezier(0.42, 0, 0.58, 1),
         easing: Easing.out(Easing.quad),
       },
       finished => {
@@ -168,6 +168,7 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
       setPressCount(0);
     }, 3000);
   };
+
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Portal>
@@ -203,9 +204,9 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
           source={require('../assets/image/bg_vqmm.png')}
           style={[
             {
-              width: 300,
-              height: 300,
-              borderRadius: 200,
+              width: screen_width * 0.8,
+              height: screen_width * 0.8,
+              borderRadius: screen_width,
               backgroundColor: 'rgba(0,0,0,0.1)',
             },
             wheelAnimatedStyle,
@@ -218,7 +219,7 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
             position: 'absolute',
             transform: [
               {
-                translateY: -15,
+                translateY: -screen_width * 0.4 * 0.1,
               },
               {scale: 0.9},
             ],
@@ -226,8 +227,8 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
           <Animated.Image
             style={[
               {
-                width: 150,
-                height: 150,
+                width: screen_width * 0.4,
+                height: screen_width * 0.4,
               },
               spinAnimatedStyle,
             ]}

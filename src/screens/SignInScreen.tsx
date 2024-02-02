@@ -32,8 +32,8 @@ const EnterPasswordScreen = () => {
       <Text style={{fontWeight: 'bold', fontSize: 16, color: 'black'}}>
         Mật khẩu
       </Text>
-
       <TextInput
+        secureTextEntry={true}
         style={{marginTop: 16}}
         label="Mật khẩu"
         contentStyle={{backgroundColor: 'white'}}

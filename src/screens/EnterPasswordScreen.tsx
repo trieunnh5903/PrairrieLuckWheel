@@ -1,4 +1,4 @@
-import {Keyboard, Pressable, Text} from 'react-native';
+import {Keyboard, Pressable, ScrollView, Text} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Button, TextInput} from 'react-native-paper';
 import {CommonActions, useNavigation} from '@react-navigation/native';
@@ -36,37 +36,46 @@ const EnterPasswordScreen = () => {
   }, [currPassword, navigation]);
 
   return (
-    <Pressable
-      onPress={() => Keyboard.dismiss()}
-      style={{justifyContent: 'center', flex: 1, padding: 20}}>
-      <Text style={{fontWeight: 'bold', fontSize: 16, color: 'black'}}>
-        Mật khẩu dùng để thay đổi tỉ lệ
-      </Text>
+    <ScrollView>
+      <Pressable
+        onPress={() => Keyboard.dismiss()}
+        style={{justifyContent: 'center', flex: 1, padding: 20}}>
+        <Text style={{fontWeight: 'bold', fontSize: 16, color: 'black'}}>
+          Mật khẩu dùng để thay đổi tỉ lệ
+        </Text>
 
-      <TextInput
-        style={{marginTop: 16}}
-        label="Mật khẩu"
-        contentStyle={{backgroundColor: 'white'}}
-        underlineColor="#a5ce3a"
-        activeUnderlineColor="#a5ce3a"
-        textColor="black"
-        onChangeText={text => setPassword(text)}
-        error={error.length > 0}
-      />
-      <Text
-        style={{color: 'red', fontWeight: 'bold', marginTop: 4, fontSize: 14}}>
-        {error}
-      </Text>
+        <TextInput
+          secureTextEntry={true}
+          style={{marginTop: 16}}
+          label="Mật khẩu"
+          contentStyle={{backgroundColor: 'white'}}
+          underlineColor="#a5ce3a"
+          activeUnderlineColor="#a5ce3a"
+          textColor="black"
+          onChangeText={text => setPassword(text)}
+          error={error.length > 0}
+        />
 
-      <Button
-        style={{margin: 20}}
-        onPress={onPress}
-        mode="contained"
-        buttonColor="#a5ce3a"
-        textColor="black">
-        OK
-      </Button>
-    </Pressable>
+        <Text
+          style={{
+            color: 'red',
+            fontWeight: 'bold',
+            marginTop: 4,
+            fontSize: 14,
+          }}>
+          {error}
+        </Text>
+
+        <Button
+          style={{margin: 20}}
+          onPress={onPress}
+          mode="contained"
+          buttonColor="#a5ce3a"
+          textColor="black">
+          OK
+        </Button>
+      </Pressable>
+    </ScrollView>
   );
 };
 

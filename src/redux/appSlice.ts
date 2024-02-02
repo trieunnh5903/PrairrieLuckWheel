@@ -4,15 +4,15 @@ import type {PayloadAction} from '@reduxjs/toolkit';
 // Define a type for the slice state
 interface AppState {
   rates: number[];
-  isSavedPassword: boolean;
+  // isSavedPassword: boolean;
   password: string | null;
 }
 
 // Define the initial state using that type
 const initialState: AppState = {
   rates: [0, 25, 0, 25, 0, 25, 0, 25],
-  isSavedPassword: false,
-  password: null,
+  // isSavedPassword: false,
+  password: '123456789',
 };
 
 export const appSlice = createSlice({
@@ -20,9 +20,9 @@ export const appSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    changeIsSavedPassword: (state, action: PayloadAction<boolean>) => {
-      state.isSavedPassword = action.payload;
-    },
+    // changeIsSavedPassword: (state, action: PayloadAction<boolean>) => {
+    //   state.isSavedPassword = action.payload;
+    // },
 
     changeRates: (state, action: PayloadAction<number[]>) => {
       state.rates = action.payload;
@@ -34,8 +34,7 @@ export const appSlice = createSlice({
   },
 });
 
-export const {savePassword, changeIsSavedPassword, changeRates} =
-  appSlice.actions;
+export const {savePassword, changeRates} = appSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 // export const selectCount = (state: RootState) => state.counter.value;
