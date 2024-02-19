@@ -2,6 +2,7 @@ import {
   Alert,
   Dimensions,
   Image,
+  ImageBackground,
   Pressable,
   StyleSheet,
   View,
@@ -22,18 +23,9 @@ import {Modal, Portal, Text} from 'react-native-paper';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../type/navigation.type';
 import {useAppSelector} from '../redux/store';
+import {screen_height} from '../constants';
 
 type WheelScreenProps = NativeStackScreenProps<RootStackParamList, 'Wheel'>;
-const prizes = [
-  {id: 1, name: 'Bánh cá kem sầu riêng', angle: 0},
-  {id: 2, name: 'Chúc bạn may mắn lần sau', angle: 45},
-  {id: 3, name: 'Bánh đồng xu', angle: 90},
-  {id: 4, name: 'Chúc bạn may mắn lần sau', angle: 135},
-  {id: 5, name: 'Bánh cá kem nhãn', angle: 180},
-  {id: 6, name: 'Chúc bạn may mắn lần sau', angle: 225},
-  {id: 7, name: 'Phomai que', angle: 270},
-  {id: 8, name: 'Chúc bạn may mắn lần sau', angle: 315},
-];
 
 const {width: screen_width} = Dimensions.get('window');
 
@@ -46,10 +38,14 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [modalVisible, setModalVisible] = React.useState(false);
   const [resultPrize, setResultPrize] = useState<string | undefined>();
+  const storeImageGift = useAppSelector(state => state.giftImage);
+
   // event
-  const showModal = (result: string | undefined) => {
-    setResultPrize(result);
-    setModalVisible(true);
+  const showModal = (result: number | undefined) => {
+    if (result) {
+      setResultPrize(storeImageGift[result]);
+      setModalVisible(true);
+    }
   };
 
   const hideModal = () => setModalVisible(false);
@@ -77,8 +73,10 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
 
   const startAnimation = (
     degressRotate: number,
-    result: string | undefined,
+    result: number | undefined,
   ) => {
+    console.log('result', result);
+
     rotationValue.value = 0;
     rotationValue.value = withTiming(
       10 * 360 - degressRotate,
@@ -94,8 +92,8 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
     );
   };
 
-  const onFinishAnimation = (result: string | undefined) => {
-    if (!result) {
+  const onFinishAnimation = (result: number | undefined) => {
+    if (result === undefined) {
       Alert.alert('Thông báo', 'Hệ thống đang gặp sự cố vui lòng thử lại sau');
     } else {
       showModal(result);
@@ -104,23 +102,33 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
   };
 
   const determinePrize = (degress: number) => {
+    console.log(degress);
+
     switch (degress) {
       case 0:
-        return prizes[0].name;
+        // return prizes[0].name;
+        return 0;
       case 45:
-        return prizes[1].name;
+        // return prizes[1].name;
+        return 1;
       case 90:
-        return prizes[2].name;
+        // return prizes[2].name;
+        return 2;
       case 135:
-        return prizes[3].name;
+        // return prizes[3].name;
+        return 3;
       case 180:
-        return prizes[4].name;
+        // return prizes[4].name;
+        return 4;
       case 225:
-        return prizes[5].name;
+        // return prizes[5].name;
+        return 5;
       case 270:
-        return prizes[6].name;
+        // return prizes[6].name;
+        return 6;
       case 315:
-        return prizes[7].name;
+        // return prizes[7].name;
+        return 7;
       default:
         break;
     }
@@ -173,29 +181,39 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
   };
 
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <ImageBackground
+      resizeMode="cover"
+      source={require('../assets/image/bg.jpg')}
+      style={styles.container}>
       <Portal>
         <Modal
           visible={modalVisible}
-          onDismiss={hideModal}
-          contentContainerStyle={styles.modal}>
-          <Text
+          contentContainerStyle={{
+            width: screen_width,
+            height: screen_height,
+          }}
+          onDismiss={hideModal}>
+          <View
+            style={{
+              backgroundColor: 'red',
+            }}>
+            <Image
+              source={{uri: resultPrize}}
+              resizeMode="contain"
+              style={{
+                width: screen_width,
+                height: screen_width,
+              }}
+            />
+          </View>
+          {/* <Text
             style={[
               styles.text,
               {fontSize: 20, fontWeight: 'bold'},
             ]}>{`Bạn đã trúng ${resultPrize}`}</Text>
           <Text style={styles.text}>
             Vui lòng like Fanpage để tiếp tục nhận thưởng theo QR Code sau
-          </Text>
-
-          <Image
-            source={require('../assets/image/qrcode_www.facebook.com.png')}
-            resizeMode="contain"
-            style={{
-              width: screen_width * 0.8,
-              height: screen_width * 0.8,
-            }}
-          />
+          </Text>*/}
         </Modal>
       </Portal>
       <View
@@ -258,13 +276,14 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
       </View>
 
       <Pressable style={styles.fab} onPress={onSettingPress} />
-    </View>
+    </ImageBackground>
   );
 };
 
 export default WheelScreen;
 
 const styles = StyleSheet.create({
+  container: {flex: 1, justifyContent: 'center', alignItems: 'center'},
   text: {
     color: 'black',
     fontSize: 16,
