@@ -26,14 +26,12 @@ import MyButton from '../component/MyButton';
 const AdminScreen = () => {
   const imageRoration = useAppSelector(state => state.imageRotation);
   const storeImageGift = useAppSelector(state => state.giftImage);
-  const navigation = useNavigation<NavigationProps>();
+  const navigation = useNavigation();
   const [errorMess, setErrorMess] = useState('');
   const currRates = useAppSelector(state => state.rates);
   const [rates, setRates] = useState(currRates);
   const dispatch = useAppDispatch();
-  const [rotationImage, setRotationImage] = useState<string | undefined>(
-    imageRoration,
-  );
+  const [rotationImage, setRotationImage] = useState(imageRoration);
   const [imageGift, setImageGift] = useState(storeImageGift);
 
   const onSubmitPress = () => {
@@ -90,7 +88,7 @@ const AdminScreen = () => {
     return true;
   };
 
-  const onChangeText = (text: string, index: number) => {
+  const onChangeText = (text, index) => {
     let newRate = [...rates];
     newRate[index] = Number(text);
     let totalRate = 0;
@@ -120,7 +118,7 @@ const AdminScreen = () => {
     }
   };
 
-  const handleChangeGift = async (cellNumber: number) => {
+  const handleChangeGift = async cellNumber => {
     const {assets} = await launchImageLibrary({mediaType: 'photo', quality: 1});
     if (assets) {
       const uri = assets[0].uri;

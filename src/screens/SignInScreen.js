@@ -1,14 +1,11 @@
 import {Keyboard, Pressable, Text} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Button, TextInput} from 'react-native-paper';
-import {CommonActions, useNavigation} from '@react-navigation/native';
-import {NavigationProps} from '../type/navigation.type';
-import {useAppDispatch, useAppSelector} from '../redux/store';
-import {savePassword} from '../redux/appSlice';
+import {useNavigation} from '@react-navigation/native';
+import {useAppSelector} from '../redux/store';
 
 const EnterPasswordScreen = () => {
-  const navigation = useNavigation<NavigationProps>();
-  const dispatch = useAppDispatch();
+  const navigation = useNavigation();
   const currPassword = useAppSelector(state => state.password);
 
   const [password, setPassword] = useState('');
@@ -18,31 +15,24 @@ const EnterPasswordScreen = () => {
       setError('Mật khẩu chứa ít nhất 8 ký tự');
       return;
     }
-    setError('');
-    dispatch(savePassword(password));
-  };
 
-  useEffect(() => {
-    if (currPassword) {
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 1,
-          routes: [{name: 'Admin'}],
-        }),
-      );
+    if (password !== currPassword) {
+      setError('Mật khẩu không đúng');
+      return;
     }
-    return () => {};
-  }, [currPassword, navigation]);
+    setError('');
+    navigation.navigate('Admin');
+  };
 
   return (
     <Pressable
       onPress={() => Keyboard.dismiss()}
       style={{justifyContent: 'center', flex: 1, padding: 20}}>
       <Text style={{fontWeight: 'bold', fontSize: 16, color: 'black'}}>
-        Mật khẩu dùng để thay đổi tỉ lệ
+        Mật khẩu
       </Text>
-
       <TextInput
+        secureTextEntry={true}
         style={{marginTop: 16}}
         label="Mật khẩu"
         contentStyle={{backgroundColor: 'white'}}

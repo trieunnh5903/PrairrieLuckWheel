@@ -20,16 +20,12 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import {Modal, Portal, Text} from 'react-native-paper';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../type/navigation.type';
 import {useAppSelector} from '../redux/store';
 import {screen_height} from '../constants';
 
-type WheelScreenProps = NativeStackScreenProps<RootStackParamList, 'Wheel'>;
-
 const {width: screen_width} = Dimensions.get('window');
 
-const WheelScreen = ({navigation}: WheelScreenProps) => {
+const WheelScreen = ({navigation}) => {
   const [pressCount, setPressCount] = useState(0);
   const rates = useAppSelector(state => state.rates);
   const rotateImage = useAppSelector(state => state.imageRotation);
@@ -37,11 +33,11 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
   const totalRate = rates.reduce((acc, rate) => acc + rate, 0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [resultPrize, setResultPrize] = useState<string | undefined>();
+  const [resultPrize, setResultPrize] = useState();
   const storeImageGift = useAppSelector(state => state.giftImage);
 
   // event
-  const showModal = (result: number | undefined) => {
+  const showModal = result => {
     if (result) {
       setResultPrize(storeImageGift[result]);
       setModalVisible(true);
@@ -51,6 +47,9 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
   const hideModal = () => setModalVisible(false);
 
   const onStartPress = () => {
+    if (!rotateImage) {
+      return;
+    }
     setIsAnimating(true);
     const randomRate = Math.random() * totalRate;
     let cumulativeRate = 0;
@@ -71,10 +70,7 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
     startAnimation(degressRotate, result);
   };
 
-  const startAnimation = (
-    degressRotate: number,
-    result: number | undefined,
-  ) => {
+  const startAnimation = (degressRotate, result) => {
     console.log('result', result);
 
     rotationValue.value = 0;
@@ -92,7 +88,7 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
     );
   };
 
-  const onFinishAnimation = (result: number | undefined) => {
+  const onFinishAnimation = result => {
     if (result === undefined) {
       Alert.alert('Thông báo', 'Hệ thống đang gặp sự cố vui lòng thử lại sau');
     } else {
@@ -101,7 +97,7 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
     setIsAnimating(false);
   };
 
-  const determinePrize = (degress: number) => {
+  const determinePrize = degress => {
     console.log(degress);
 
     switch (degress) {
@@ -195,25 +191,18 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
           onDismiss={hideModal}>
           <View
             style={{
-              backgroundColor: 'red',
+              flex: 1,
             }}>
             <Image
               source={{uri: resultPrize}}
-              resizeMode="contain"
               style={{
-                width: screen_width,
-                height: screen_width,
+                width: null,
+                height: null,
+                flex: 1,
+                resizeMode: 'cover',
               }}
             />
           </View>
-          {/* <Text
-            style={[
-              styles.text,
-              {fontSize: 20, fontWeight: 'bold'},
-            ]}>{`Bạn đã trúng ${resultPrize}`}</Text>
-          <Text style={styles.text}>
-            Vui lòng like Fanpage để tiếp tục nhận thưởng theo QR Code sau
-          </Text>*/}
         </Modal>
       </Portal>
       <View
@@ -229,7 +218,6 @@ const WheelScreen = ({navigation}: WheelScreenProps) => {
                 width: screen_width * 0.8,
                 height: screen_width * 0.8,
                 borderRadius: screen_width,
-                backgroundColor: 'rgba(0,0,0,0.1)',
               },
               wheelAnimatedStyle,
             ]}
