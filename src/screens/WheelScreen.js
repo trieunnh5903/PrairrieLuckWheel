@@ -79,13 +79,16 @@ const WheelScreen = ({navigation}) => {
     const degressResult = (360 / rates.length) * selectedSegment;
     const degressRotate = (360 / rates.length) * selectedSegment + randomNum;
     const result = determinePrize(degressResult);
-    startAnimation(degressRotate, result);
+    const resultUri = storeImageGift[result];
+    console.log('resultUri', resultUri);
+    console.log('result index', result);
+    if (resultUri) {
+      setResultPrize(resultUri);
+      startAnimation(degressRotate);
+    }
   };
 
-  console.log(resultPrize);
-  const startAnimation = (degressRotate, result) => {
-    console.log('result index', result);
-    setResultPrize(storeImageGift[result]);
+  const startAnimation = degressRotate => {
     rotationValue.value = 0;
     rotationValue.value = withTiming(
       10 * 360 - degressRotate,
@@ -102,41 +105,35 @@ const WheelScreen = ({navigation}) => {
   };
 
   const onFinishAnimation = () => {
-    if (!resultPrize) {
-      Alert.alert('Thông báo', 'Hệ thống đang gặp sự cố vui lòng thử lại sau');
-    } else {
-      showModal();
-    }
+    // console.log(resultPrize);
+
+    // if (!resultPrize) {
+    //   Alert.alert('Thông báo', 'Hệ thống đang gặp sự cố vui lòng thử lại sau');
+    // } else {
+    //   showModal();
+    // }
+    showModal();
     setIsAnimating(false);
   };
 
   const determinePrize = degress => {
     console.log(degress);
-
     switch (degress) {
       case 0:
-        // return prizes[0].name;
         return 0;
       case 45:
-        // return prizes[1].name;
         return 1;
       case 90:
-        // return prizes[2].name;
         return 2;
       case 135:
-        // return prizes[3].name;
         return 3;
       case 180:
-        // return prizes[4].name;
         return 4;
       case 225:
-        // return prizes[5].name;
         return 5;
       case 270:
-        // return prizes[6].name;
         return 6;
       case 315:
-        // return prizes[7].name;
         return 7;
       default:
         break;
