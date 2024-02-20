@@ -52,11 +52,8 @@ const WheelScreen = ({navigation}) => {
   }, [navigation, rates, rotateImage, storeImageBackround, storeImageGift]);
 
   // event
-  const showModal = result => {
-    if (result) {
-      setResultPrize(storeImageGift[result]);
-      setModalVisible(true);
-    }
+  const showModal = () => {
+    setModalVisible(true);
   };
 
   const hideModal = () => setModalVisible(false);
@@ -85,9 +82,10 @@ const WheelScreen = ({navigation}) => {
     startAnimation(degressRotate, result);
   };
 
+  console.log(resultPrize);
   const startAnimation = (degressRotate, result) => {
-    console.log('result', result);
-
+    console.log('result index', result);
+    setResultPrize(storeImageGift[result]);
     rotationValue.value = 0;
     rotationValue.value = withTiming(
       10 * 360 - degressRotate,
@@ -97,17 +95,17 @@ const WheelScreen = ({navigation}) => {
       },
       finished => {
         if (finished) {
-          runOnJS(onFinishAnimation)(result);
+          runOnJS(onFinishAnimation)();
         }
       },
     );
   };
 
-  const onFinishAnimation = result => {
-    if (result === undefined) {
+  const onFinishAnimation = () => {
+    if (!resultPrize) {
       Alert.alert('Thông báo', 'Hệ thống đang gặp sự cố vui lòng thử lại sau');
     } else {
-      showModal(result);
+      showModal();
     }
     setIsAnimating(false);
   };
