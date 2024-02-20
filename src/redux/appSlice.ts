@@ -6,11 +6,13 @@ interface AppState {
   // isSavedPassword: boolean;
   password: string | null;
   imageRotation: string | undefined;
+  imageBackground: string | undefined;
   giftImage: (string | undefined)[];
 }
 
 const initialState: AppState = {
   rates: [0, 25, 0, 25, 0, 25, 0, 25],
+  imageBackground: undefined,
   // isSavedPassword: false,
   password: '123456789',
   imageRotation: undefined,
@@ -49,11 +51,20 @@ export const appSlice = createSlice({
     changeImageCell: (state, action: PayloadAction<(string | undefined)[]>) => {
       state.giftImage = action.payload;
     },
+
+    changeImageBackground: (state, action: PayloadAction<string>) => {
+      state.imageBackground = action.payload;
+    },
   },
 });
 
-export const {savePassword, changeImageRotation, changeImageCell, changeRates} =
-  appSlice.actions;
+export const {
+  savePassword,
+  changeImageRotation,
+  changeImageCell,
+  changeRates,
+  changeImageBackground,
+} = appSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 // export const selectCount = (state: RootState) => state.counter.value;

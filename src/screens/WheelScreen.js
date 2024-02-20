@@ -7,7 +7,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Animated, {
   Easing,
   cancelAnimation,
@@ -22,19 +22,34 @@ import Animated, {
 import {Modal, Portal, Text} from 'react-native-paper';
 import {useAppSelector} from '../redux/store';
 import {screen_height} from '../constants';
+import {CommonActions} from '@react-navigation/native';
 
 const {width: screen_width} = Dimensions.get('window');
 
 const WheelScreen = ({navigation}) => {
-  const [pressCount, setPressCount] = useState(0);
   const rates = useAppSelector(state => state.rates);
+  const storeImageGift = useAppSelector(state => state.giftImage);
   const rotateImage = useAppSelector(state => state.imageRotation);
+  const storeImageBackround = useAppSelector(state => state.imageBackground);
+
+  const [pressCount, setPressCount] = useState(0);
   const rotationValue = useSharedValue(0);
   const totalRate = rates.reduce((acc, rate) => acc + rate, 0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [modalVisible, setModalVisible] = React.useState(false);
   const [resultPrize, setResultPrize] = useState();
-  const storeImageGift = useAppSelector(state => state.giftImage);
+
+  useEffect(() => {
+    if (!rates || !storeImageGift || !rotateImage || !storeImageBackround) {
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 1,
+          routes: [{name: 'SignIn'}],
+        }),
+      );
+    }
+    return () => {};
+  }, [navigation, rates, rotateImage, storeImageBackround, storeImageGift]);
 
   // event
   const showModal = result => {
@@ -179,7 +194,7 @@ const WheelScreen = ({navigation}) => {
   return (
     <ImageBackground
       resizeMode="cover"
-      source={require('../assets/image/bg.jpg')}
+      source={{uri: storeImageBackround}}
       style={styles.container}>
       <Portal>
         <Modal

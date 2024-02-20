@@ -12,9 +12,9 @@ import {
 import React, {useState} from 'react';
 import {Button, DataTable, Text} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
-import {NavigationProps} from '../type/navigation.type';
 import {useAppDispatch, useAppSelector} from '../redux/store';
 import {
+  changeImageBackground,
   changeImageCell,
   changeImageRotation,
   changeRates,
@@ -26,13 +26,17 @@ import MyButton from '../component/MyButton';
 const AdminScreen = () => {
   const imageRoration = useAppSelector(state => state.imageRotation);
   const storeImageGift = useAppSelector(state => state.giftImage);
-  const navigation = useNavigation();
-  const [errorMess, setErrorMess] = useState('');
+  const storeImageBackround = useAppSelector(state => state.imageBackground);
   const currRates = useAppSelector(state => state.rates);
-  const [rates, setRates] = useState(currRates);
+
+  const navigation = useNavigation();
   const dispatch = useAppDispatch();
+
+  const [errorMess, setErrorMess] = useState('');
+  const [rates, setRates] = useState(currRates);
   const [rotationImage, setRotationImage] = useState(imageRoration);
   const [imageGift, setImageGift] = useState(storeImageGift);
+  const [imageBackground, setImageBackground] = useState(storeImageBackround);
 
   const onSubmitPress = () => {
     const isValid = validate();
@@ -42,6 +46,10 @@ const AdminScreen = () => {
         dispatch(changeImageRotation(rotationImage));
       }
       dispatch(changeImageCell(imageGift));
+
+      if (imageBackground) {
+        dispatch(changeImageBackground(imageBackground));
+      }
       navigation.navigate('Wheel');
     }
   };
@@ -71,6 +79,11 @@ const AdminScreen = () => {
       return false;
     }
 
+    if (!imageBackground) {
+      Alert.alert('', 'Ảnh nền đang trống');
+      return false;
+    }
+
     if (!rotationImage) {
       Alert.alert('', 'Ảnh vòng quay đang trống');
       return false;
@@ -84,6 +97,7 @@ const AdminScreen = () => {
         return false;
       }
     }
+
     setErrorMess('');
     return true;
   };
@@ -106,14 +120,10 @@ const AdminScreen = () => {
     setRates(newRate);
   };
 
-  console.log(imageGift);
-
   const handleChangeImageSpin = async () => {
     const {assets} = await launchImageLibrary({mediaType: 'photo', quality: 1});
     if (assets) {
       const uri = assets[0].uri;
-      console.log('uri', uri);
-      console.log('assets', assets);
       setRotationImage(uri);
     }
   };
@@ -125,6 +135,14 @@ const AdminScreen = () => {
       let newGift = [...imageGift];
       newGift[cellNumber] = uri;
       setImageGift(newGift);
+    }
+  };
+
+  const handleChangeBackground = async () => {
+    const {assets} = await launchImageLibrary({mediaType: 'photo', quality: 1});
+    if (assets) {
+      const uri = assets[0].uri;
+      setImageBackground(uri);
     }
   };
 
@@ -141,7 +159,7 @@ const AdminScreen = () => {
                 fontWeight: 'bold',
                 fontSize: 18,
               }}>
-              Mô tả vòng quay
+              Mô tả vòng quay (Các phần được đánh số thứ tự)
             </Text>
             <Image
               source={require('../assets/image/tutorial.png')}
@@ -152,11 +170,20 @@ const AdminScreen = () => {
                 marginTop: 10,
               }}
             />
+            <Text
+              style={{
+                color: 'black',
+                fontWeight: 'bold',
+                fontSize: 18,
+                marginTop: 10,
+              }}>
+              Tỉ lệ phần thưởng
+            </Text>
             {/* tabel */}
             <DataTable>
               <DataTable.Header>
                 <DataTable.Title textStyle={styles.textTitle}>
-                  Ô
+                  Phần
                 </DataTable.Title>
 
                 <DataTable.Title numeric textStyle={styles.textTitle}>
@@ -388,6 +415,63 @@ const AdminScreen = () => {
                 // }
               })}
             </DataTable>
+            {/* background */}
+            <Text
+              style={{
+                color: 'black',
+                fontWeight: 'bold',
+                fontSize: 18,
+                marginTop: 20,
+              }}>
+              Hình ảnh nền
+            </Text>
+            <View
+              style={{
+                width: screen_width * 0.6,
+                height: screen_width * 0.6,
+                marginTop: 20,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              {imageBackground ? (
+                <Image
+                  source={{uri: imageBackground}}
+                  resizeMode="contain"
+                  style={{
+                    width: screen_width * 0.6,
+                    height: screen_width * 0.6,
+                  }}
+                />
+              ) : (
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 6,
+                    borderColor: 'lightgray',
+                    width: '100%',
+                    height: '100%',
+                    borderWidth: 1,
+                  }}>
+                  <Text
+                    style={{
+                      color: 'black',
+                      fontWeight: 'bold',
+                      fontSize: 14,
+                    }}>
+                    Trống
+                  </Text>
+                </View>
+              )}
+            </View>
+            <Button
+              onPress={handleChangeBackground}
+              style={{marginVertical: 20, alignSelf: 'flex-start'}}
+              mode="contained"
+              buttonColor="#a5ce3a"
+              textColor="black">
+              Thay đổi
+            </Button>
             {/* img spin */}
             <Text
               style={{
@@ -458,7 +542,7 @@ const AdminScreen = () => {
             {imageGift.map((item, index) => {
               return (
                 <View key={index}>
-                  <Text style={styles.subtitle}>Ô số {index + 1}</Text>
+                  <Text style={styles.subtitle}>Phần số {index + 1}</Text>
                   <View style={styles.giftWrapper}>
                     {item ? (
                       <Image
@@ -482,156 +566,6 @@ const AdminScreen = () => {
                 </View>
               );
             })}
-            {/* <Text style={styles.subtitle}>Ô số 1</Text>
-            <View style={styles.giftWrapper}>
-              {rotationImage ? (
-                <Image
-                  source={{uri: rotationImage}}
-                  resizeMode="contain"
-                  style={{
-                    width: screen_width * 0.6,
-                    height: screen_width * 0.6,
-                  }}
-                />
-              ) : (
-                <View style={styles.imageGift}>
-                  <Text style={styles.subtitle}>Trống</Text>
-                </View>
-              )}
-            </View>
-            <MyButton label="Thay đổi" onPress={() => handleChangeGift(1)} />
-            <Text style={styles.subtitle}>Ô số 2</Text>
-            <View style={styles.giftWrapper}>
-              {rotationImage ? (
-                <Image
-                  source={{uri: rotationImage}}
-                  resizeMode="contain"
-                  style={{
-                    width: screen_width * 0.6,
-                    height: screen_width * 0.6,
-                  }}
-                />
-              ) : (
-                <View style={styles.imageGift}>
-                  <Text style={styles.subtitle}>Trống</Text>
-                </View>
-              )}
-            </View>
-            <MyButton label="Thay đổi" onPress={() => handleChangeGift(2)} />
-
-            <Text style={styles.subtitle}>Ô số 3</Text>
-            <View style={styles.giftWrapper}>
-              {rotationImage ? (
-                <Image
-                  source={{uri: rotationImage}}
-                  resizeMode="contain"
-                  style={{
-                    width: screen_width * 0.6,
-                    height: screen_width * 0.6,
-                  }}
-                />
-              ) : (
-                <View style={styles.imageGift}>
-                  <Text style={styles.subtitle}>Trống</Text>
-                </View>
-              )}
-            </View>
-            <MyButton label="Thay đổi" onPress={() => handleChangeGift(3)} />
-
-            <Text style={styles.subtitle}>Ô số 4</Text>
-            <View style={styles.giftWrapper}>
-              {rotationImage ? (
-                <Image
-                  source={{uri: rotationImage}}
-                  resizeMode="contain"
-                  style={{
-                    width: screen_width * 0.6,
-                    height: screen_width * 0.6,
-                  }}
-                />
-              ) : (
-                <View style={styles.imageGift}>
-                  <Text style={styles.subtitle}>Trống</Text>
-                </View>
-              )}
-            </View>
-            <MyButton label="Thay đổi" onPress={() => handleChangeGift(4)} />
-
-            <Text style={styles.subtitle}>Ô số 5</Text>
-            <View style={styles.giftWrapper}>
-              {rotationImage ? (
-                <Image
-                  source={{uri: rotationImage}}
-                  resizeMode="contain"
-                  style={{
-                    width: screen_width * 0.6,
-                    height: screen_width * 0.6,
-                  }}
-                />
-              ) : (
-                <View style={styles.imageGift}>
-                  <Text style={styles.subtitle}>Trống</Text>
-                </View>
-              )}
-            </View>
-            <MyButton label="Thay đổi" onPress={() => handleChangeGift(5)} />
-
-            <Text style={styles.subtitle}>Ô số 6</Text>
-            <View style={styles.giftWrapper}>
-              {rotationImage ? (
-                <Image
-                  source={{uri: rotationImage}}
-                  resizeMode="contain"
-                  style={{
-                    width: screen_width * 0.6,
-                    height: screen_width * 0.6,
-                  }}
-                />
-              ) : (
-                <View style={styles.imageGift}>
-                  <Text style={styles.subtitle}>Trống</Text>
-                </View>
-              )}
-            </View>
-            <MyButton label="Thay đổi" onPress={() => handleChangeGift(6)} />
-
-            <Text style={styles.subtitle}>Ô số 7</Text>
-            <View style={styles.giftWrapper}>
-              {rotationImage ? (
-                <Image
-                  source={{uri: rotationImage}}
-                  resizeMode="contain"
-                  style={{
-                    width: screen_width * 0.6,
-                    height: screen_width * 0.6,
-                  }}
-                />
-              ) : (
-                <View style={styles.imageGift}>
-                  <Text style={styles.subtitle}>Trống</Text>
-                </View>
-              )}
-            </View>
-            <MyButton label="Thay đổi" onPress={() => handleChangeGift(7)} />
-
-            <Text style={styles.subtitle}>Ô số 8</Text>
-            <View style={styles.giftWrapper}>
-              {rotationImage ? (
-                <Image
-                  source={{uri: rotationImage}}
-                  resizeMode="contain"
-                  style={{
-                    width: screen_width * 0.6,
-                    height: screen_width * 0.6,
-                  }}
-                />
-              ) : (
-                <View style={styles.imageGift}>
-                  <Text style={styles.subtitle}>Trống</Text>
-                </View>
-              )}
-            </View>
-            <MyButton label="Thay đổi" onPress={() => handleChangeGift(8)} /> */}
 
             {/* submit */}
             <Button
