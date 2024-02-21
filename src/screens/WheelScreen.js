@@ -39,17 +39,17 @@ const WheelScreen = ({navigation}) => {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [resultPrize, setResultPrize] = useState();
 
-  useEffect(() => {
-    if (!rates || !storeImageGift || !rotateImage || !storeImageBackround) {
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 1,
-          routes: [{name: 'SignIn'}],
-        }),
-      );
-    }
-    return () => {};
-  }, [navigation, rates, rotateImage, storeImageBackround, storeImageGift]);
+  // useEffect(() => {
+  //   if (!rates || !storeImageGift || !rotateImage || !storeImageBackround) {
+  //     navigation.dispatch(
+  //       CommonActions.reset({
+  //         index: 1,
+  //         routes: [{name: 'SignIn'}],
+  //       }),
+  //     );
+  //   }
+  //   return () => {};
+  // }, [navigation, rates, rotateImage, storeImageBackround, storeImageGift]);
 
   // event
   const showModal = () => {

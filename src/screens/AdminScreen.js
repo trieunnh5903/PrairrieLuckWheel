@@ -59,7 +59,7 @@ const AdminScreen = () => {
     for (let i = 0; i < rates.length; i++) {
       if (isNaN(rates[i])) {
         setErrorMess('Hãy nhập giá trị số');
-        Alert.alert('', 'Tỉ lệ là giá trị số');
+        Alert.alert('', 'Tỉ lệ phần quà là giá trị số');
         return false;
       }
     }
@@ -104,12 +104,19 @@ const AdminScreen = () => {
 
   const onChangeText = (text, index) => {
     let newRate = [...rates];
-    newRate[index] = Number(text);
+    newRate[index] = text;
+    setRates(newRate);
+  };
+
+  const onEndEditing = () => {
+    let newRate = rates.map(function (str) {
+      return parseFloat(str);
+    });
+    //total lucky rate
     let totalRate = 0;
     for (let i = 0; i < newRate.length; i++) {
       if (i % 2 === 0) {
-        // Chỉ số chẵn
-        totalRate += newRate[i];
+        totalRate += parseFloat(newRate[i]);
       }
     }
     const unluckyRate = (100 - totalRate) / 4;
@@ -153,12 +160,7 @@ const AdminScreen = () => {
           style={{backgroundColor: 'white'}}
           onPress={() => Keyboard.dismiss()}>
           <View style={{padding: 20}}>
-            <Text
-              style={{
-                color: 'black',
-                fontWeight: 'bold',
-                fontSize: 18,
-              }}>
+            <Text style={styles.textTitle}>
               Mô tả vòng quay (Các phần được đánh số thứ tự)
             </Text>
             <Image
@@ -170,13 +172,7 @@ const AdminScreen = () => {
                 marginTop: 10,
               }}
             />
-            <Text
-              style={{
-                color: 'black',
-                fontWeight: 'bold',
-                fontSize: 18,
-                marginTop: 10,
-              }}>
+            <Text style={[styles.textTitle, styles.mt20]}>
               Tỉ lệ phần thưởng
             </Text>
             {/* tabel */}
@@ -212,227 +208,17 @@ const AdminScreen = () => {
                         style={{color: 'black'}}
                         keyboardType="number-pad"
                         onChangeText={value => onChangeText(value, index)}
+                        onEndEditing={() => onEndEditing()}
                         value={rates[index].toString()}
                       />
                     </DataTable.Cell>
                   </DataTable.Row>
                 );
-                // if (index === 0) {
-                //   return (
-                //     <DataTable.Row
-                //       key={index}
-                //       style={
-                //         errorMess
-                //           ? {borderBottomColor: 'red', borderBottomWidth: 1}
-                //           : {}
-                //       }>
-                //       <DataTable.Cell
-                //         style={{
-                //           flex: 4,
-                //         }}
-                //         textStyle={styles.textBody}>
-                //         Số 1
-                //       </DataTable.Cell>
-                //       <DataTable.Cell numeric>
-                //         <TextInput
-                //           style={{color: 'black'}}
-                //           keyboardType="number-pad"
-                //           onChangeText={value => onChangeText(value, index)}
-                //           value={rates[index].toString()}
-                //         />
-                //       </DataTable.Cell>
-                //     </DataTable.Row>
-                //   );
-                // }
-                // if (index === 1) {
-                //   return (
-                //     <DataTable.Row key={index}>
-                //       <DataTable.Cell
-                //         style={{
-                //           flex: 4,
-                //         }}
-                //         textStyle={[styles.textBody, {color: 'gray'}]}>
-                //         Chúc may mắn lần sau
-                //       </DataTable.Cell>
-                //       <DataTable.Cell numeric>
-                //         <TextInput
-                //           editable={false}
-                //           style={{color: 'gray'}}
-                //           keyboardType="number-pad"
-                //           onChangeText={value => onChangeText(value, index)}
-                //           defaultValue={rates[index].toString()}
-                //         />
-                //       </DataTable.Cell>
-                //     </DataTable.Row>
-                //   );
-                // }
-                // if (index === 2) {
-                //   return (
-                //     <DataTable.Row
-                //       key={index}
-                //       style={
-                //         errorMess
-                //           ? {borderBottomColor: 'red', borderBottomWidth: 1}
-                //           : {}
-                //       }>
-                //       <DataTable.Cell
-                //         style={{
-                //           flex: 4,
-                //         }}
-                //         textStyle={styles.textBody}>
-                //         Bánh đồng xu
-                //       </DataTable.Cell>
-                //       <DataTable.Cell numeric>
-                //         <TextInput
-                //           style={{color: 'black'}}
-                //           keyboardType="number-pad"
-                //           onChangeText={value => onChangeText(value, index)}
-                //           defaultValue={rates[index].toString()}
-                //         />
-                //       </DataTable.Cell>
-                //     </DataTable.Row>
-                //   );
-                // }
-                // if (index === 3) {
-                //   return (
-                //     <DataTable.Row key={index}>
-                //       <DataTable.Cell
-                //         style={{
-                //           flex: 4,
-                //         }}
-                //         textStyle={[styles.textBody, {color: 'gray'}]}>
-                //         Chúc may mắn lần sau
-                //       </DataTable.Cell>
-                //       <DataTable.Cell numeric>
-                //         <TextInput
-                //           editable={false}
-                //           style={{color: 'gray'}}
-                //           keyboardType="number-pad"
-                //           onChangeText={value => onChangeText(value, index)}
-                //           defaultValue={rates[index].toString()}
-                //         />
-                //       </DataTable.Cell>
-                //     </DataTable.Row>
-                //   );
-                // }
-                // if (index === 4) {
-                //   return (
-                //     <DataTable.Row
-                //       key={index}
-                //       style={
-                //         errorMess
-                //           ? {borderBottomColor: 'red', borderBottomWidth: 1}
-                //           : {}
-                //       }>
-                //       <DataTable.Cell
-                //         style={{
-                //           flex: 4,
-                //         }}
-                //         textStyle={{color: 'black', fontSize: 16}}>
-                //         Bánh cá kem nhãn
-                //       </DataTable.Cell>
-                //       <DataTable.Cell numeric>
-                //         <TextInput
-                //           style={{color: 'black'}}
-                //           keyboardType="number-pad"
-                //           onChangeText={value => onChangeText(value, index)}
-                //           defaultValue={rates[index].toString()}
-                //         />
-                //       </DataTable.Cell>
-                //     </DataTable.Row>
-                //   );
-                // }
-                // if (index === 5) {
-                //   return (
-                //     <DataTable.Row key={index}>
-                //       <DataTable.Cell
-                //         style={{
-                //           flex: 4,
-                //         }}
-                //         textStyle={[styles.textBody, {color: 'gray'}]}>
-                //         Chúc may mắn lần sau
-                //       </DataTable.Cell>
-                //       <DataTable.Cell numeric>
-                //         <TextInput
-                //           editable={false}
-                //           style={{color: 'gray'}}
-                //           keyboardType="number-pad"
-                //           onChangeText={value => onChangeText(value, index)}
-                //           defaultValue={rates[index].toString()}
-                //         />
-                //       </DataTable.Cell>
-                //     </DataTable.Row>
-                //   );
-                // }
-                // if (index === 6) {
-                //   return (
-                //     <DataTable.Row
-                //       key={index}
-                //       style={
-                //         errorMess
-                //           ? {borderBottomColor: 'red', borderBottomWidth: 1}
-                //           : {}
-                //       }>
-                //       <DataTable.Cell
-                //         style={{
-                //           flex: 4,
-                //         }}
-                //         textStyle={{color: 'black', fontSize: 16}}>
-                //         Phomai que
-                //       </DataTable.Cell>
-                //       <DataTable.Cell numeric>
-                //         <TextInput
-                //           style={{color: 'black'}}
-                //           keyboardType="number-pad"
-                //           onChangeText={value => onChangeText(value, index)}
-                //           defaultValue={rates[index].toString()}
-                //         />
-                //       </DataTable.Cell>
-                //     </DataTable.Row>
-                //   );
-                // }
-                // if (index === 7) {
-                //   return (
-                //     <DataTable.Row key={index}>
-                //       <DataTable.Cell
-                //         style={{
-                //           flex: 4,
-                //         }}
-                //         textStyle={[styles.textBody, {color: 'gray'}]}>
-                //         Chúc may mắn lần sau
-                //       </DataTable.Cell>
-                //       <DataTable.Cell numeric>
-                //         <TextInput
-                //           editable={false}
-                //           style={{color: 'gray'}}
-                //           keyboardType="number-pad"
-                //           onChangeText={value => onChangeText(value, index)}
-                //           defaultValue={rates[index].toString()}
-                //         />
-                //       </DataTable.Cell>
-                //     </DataTable.Row>
-                //   );
-                // }
               })}
             </DataTable>
             {/* background */}
-            <Text
-              style={{
-                color: 'black',
-                fontWeight: 'bold',
-                fontSize: 18,
-                marginTop: 20,
-              }}>
-              Hình ảnh nền
-            </Text>
-            <View
-              style={{
-                width: screen_width * 0.6,
-                height: screen_width * 0.6,
-                marginTop: 20,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
+            <Text style={[styles.textTitle, styles.mt20]}>Hình ảnh nền</Text>
+            <View style={[styles.gift, styles.mt20]}>
               {imageBackground ? (
                 <Image
                   source={{uri: imageBackground}}
@@ -443,24 +229,8 @@ const AdminScreen = () => {
                   }}
                 />
               ) : (
-                <View
-                  style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderRadius: 6,
-                    borderColor: 'lightgray',
-                    width: '100%',
-                    height: '100%',
-                    borderWidth: 1,
-                  }}>
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontWeight: 'bold',
-                      fontSize: 14,
-                    }}>
-                    Trống
-                  </Text>
+                <View style={styles.emptyView}>
+                  <Text style={styles.textEmpty}>Trống</Text>
                 </View>
               )}
             </View>
@@ -473,23 +243,10 @@ const AdminScreen = () => {
               Thay đổi
             </Button>
             {/* img spin */}
-            <Text
-              style={{
-                color: 'black',
-                fontWeight: 'bold',
-                fontSize: 18,
-                marginTop: 20,
-              }}>
+            <Text style={[styles.textTitle, styles.mt20]}>
               Hình ảnh vòng quay
             </Text>
-            <View
-              style={{
-                width: screen_width * 0.6,
-                height: screen_width * 0.6,
-                marginTop: 20,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
+            <View style={[styles.gift, styles.mt20]}>
               {rotationImage ? (
                 <Image
                   source={{uri: rotationImage}}
@@ -500,24 +257,8 @@ const AdminScreen = () => {
                   }}
                 />
               ) : (
-                <View
-                  style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderRadius: 6,
-                    borderColor: 'lightgray',
-                    width: '100%',
-                    height: '100%',
-                    borderWidth: 1,
-                  }}>
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontWeight: 'bold',
-                      fontSize: 14,
-                    }}>
-                    Trống
-                  </Text>
+                <View style={styles.emptyView}>
+                  <Text style={styles.textEmpty}>Trống</Text>
                 </View>
               )}
             </View>
@@ -530,12 +271,7 @@ const AdminScreen = () => {
               Thay đổi
             </Button>
             {/* image gift */}
-            <Text
-              style={{
-                color: 'black',
-                fontWeight: 'bold',
-                fontSize: 18,
-              }}>
+            <Text style={[styles.textTitle, styles.mt20]}>
               Hình ảnh phần thưởng
             </Text>
             {/* cell 1 */}
@@ -586,6 +322,29 @@ const AdminScreen = () => {
 export default AdminScreen;
 
 const styles = StyleSheet.create({
+  emptyView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 6,
+    borderColor: 'lightgray',
+    width: '100%',
+    height: '100%',
+    borderWidth: 1,
+  },
+  gift: {
+    width: screen_width * 0.6,
+    height: screen_width * 0.6,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textEmpty: {
+    color: 'black',
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
+  mt20: {
+    marginTop: 20,
+  },
   imageGift: {
     justifyContent: 'center',
     alignItems: 'center',

@@ -6,6 +6,7 @@ export type RootStackParamList = {
   SignIn: undefined;
   Wheel: undefined;
   EnterPassword: undefined;
+  Welcome: undefined;
 };
 
 export type NavigationProps = NativeStackNavigationProp<RootStackParamList>;
