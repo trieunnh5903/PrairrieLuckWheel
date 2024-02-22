@@ -1,5 +1,4 @@
 import {
-  Alert,
   Dimensions,
   Image,
   ImageBackground,
@@ -7,7 +6,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import Animated, {
   Easing,
   cancelAnimation,
@@ -22,7 +21,6 @@ import Animated, {
 import {Modal, Portal, Text} from 'react-native-paper';
 import {useAppSelector} from '../redux/store';
 import {screen_height} from '../constants';
-import {CommonActions} from '@react-navigation/native';
 
 const {width: screen_width} = Dimensions.get('window');
 
@@ -38,18 +36,6 @@ const WheelScreen = ({navigation}) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [modalVisible, setModalVisible] = React.useState(false);
   const [resultPrize, setResultPrize] = useState();
-
-  // useEffect(() => {
-  //   if (!rates || !storeImageGift || !rotateImage || !storeImageBackround) {
-  //     navigation.dispatch(
-  //       CommonActions.reset({
-  //         index: 1,
-  //         routes: [{name: 'SignIn'}],
-  //       }),
-  //     );
-  //   }
-  //   return () => {};
-  // }, [navigation, rates, rotateImage, storeImageBackround, storeImageGift]);
 
   // event
   const showModal = () => {
@@ -105,13 +91,6 @@ const WheelScreen = ({navigation}) => {
   };
 
   const onFinishAnimation = () => {
-    // console.log(resultPrize);
-
-    // if (!resultPrize) {
-    //   Alert.alert('Thông báo', 'Hệ thống đang gặp sự cố vui lòng thử lại sau');
-    // } else {
-    //   showModal();
-    // }
     showModal();
     setIsAnimating(false);
   };
