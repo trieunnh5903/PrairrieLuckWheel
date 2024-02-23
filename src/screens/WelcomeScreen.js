@@ -27,6 +27,7 @@ const WelcomeScreen = ({navigation}) => {
     }
     return () => {};
   }, [navigation, rates, rotateImage, storeImageBackround, storeImageGift]);
+
   return (
     <View style={{flex: 1}}>
       <Image

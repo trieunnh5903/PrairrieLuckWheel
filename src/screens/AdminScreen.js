@@ -166,15 +166,44 @@ const AdminScreen = () => {
             <Image
               source={require('../assets/image/tutorial.png')}
               resizeMode="contain"
-              style={{
-                width: screen_width * 0.6,
-                height: screen_width * 0.6,
-                marginTop: 10,
-              }}
+              style={styles.imageTutorial}
             />
+
             <Text style={[styles.textTitle, styles.mt20]}>
               Tỉ lệ phần thưởng
             </Text>
+
+            <View style={styles.roundView}>
+              <Image
+                source={require('../assets/image/round.png')}
+                resizeMode="contain"
+                style={styles.roundImage}
+              />
+              <Text style={[styles.roundTextRate1]}>
+                {rates[0].toString().slice(0, 5)}%
+              </Text>
+              <Text style={[styles.roundTextRate2]}>
+                {rates[1].toString().slice(0, 5)}%
+              </Text>
+              <Text style={[styles.roundTextRate3]}>
+                {rates[2].toString().slice(0, 5)}%
+              </Text>
+              <Text style={[styles.roundTextRate4]}>
+                {rates[3].toString().slice(0, 5)}%
+              </Text>
+              <Text style={[styles.roundTextRate5]}>
+                {rates[4].toString().slice(0, 5)}%
+              </Text>
+              <Text style={[styles.roundTextRate6]}>
+                {rates[5].toString().slice(0, 5)}%
+              </Text>
+              <Text style={[styles.roundTextRate7]}>
+                {rates[6].toString().slice(0, 5)}%
+              </Text>
+              <Text style={[styles.roundTextRate8]}>
+                {rates[7].toString().slice(0, 5)}%
+              </Text>
+            </View>
             {/* tabel */}
             <DataTable>
               <DataTable.Header>
@@ -322,6 +351,76 @@ const AdminScreen = () => {
 export default AdminScreen;
 
 const styles = StyleSheet.create({
+  roundTextRate1: {
+    color: 'black',
+    position: 'absolute',
+    right: '34%',
+    top: '16%',
+  },
+
+  roundTextRate2: {
+    color: 'black',
+    position: 'absolute',
+    right: '24%',
+    top: '37%',
+  },
+
+  roundTextRate3: {
+    color: 'black',
+    position: 'absolute',
+    right: '24%',
+    bottom: '34%',
+  },
+
+  roundTextRate4: {
+    color: 'black',
+    position: 'absolute',
+    right: '34%',
+    bottom: '14%',
+  },
+
+  roundTextRate5: {
+    color: 'black',
+    position: 'absolute',
+    left: '34%',
+    bottom: '14%',
+  },
+
+  roundTextRate6: {
+    left: '24%',
+    bottom: '34%',
+    color: 'black',
+    position: 'absolute',
+  },
+
+  roundTextRate7: {
+    color: 'black',
+    position: 'absolute',
+    left: '24%',
+    top: '37%',
+  },
+
+  roundTextRate8: {
+    color: 'black',
+    position: 'absolute',
+    left: '34%',
+    top: '16%',
+  },
+
+  roundImage: {
+    width: screen_width * 0.6,
+    height: screen_width * 0.6,
+    marginTop: 10,
+  },
+  roundView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageTutorial: {
+    width: screen_width * 0.6,
+    height: screen_width * 0.6,
+    marginTop: 10,
+  },
   emptyView: {
     justifyContent: 'center',
     alignItems: 'center',
