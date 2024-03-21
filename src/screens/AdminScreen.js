@@ -246,7 +246,9 @@ const AdminScreen = () => {
               })}
             </DataTable>
             {/* background */}
-            <Text style={[styles.textTitle, styles.mt20]}>Hình ảnh nền</Text>
+            <Text style={[styles.textTitle, styles.mt20]}>
+              Hình ảnh nền của vòng quay
+            </Text>
             <View style={[styles.gift, styles.mt20]}>
               {imageBackground ? (
                 <Image
