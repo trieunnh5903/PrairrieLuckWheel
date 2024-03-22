@@ -31,7 +31,7 @@ const WelcomeScreen = ({navigation}) => {
   return (
     <View style={{flex: 1}}>
       <Image
-        resizeMode="contain"
+        resizeMode="cover"
         style={{width, height}}
         source={require('../assets/image/z5176770054393_b848428422d9132de84ee41669ed09d7.jpg')}
       />
