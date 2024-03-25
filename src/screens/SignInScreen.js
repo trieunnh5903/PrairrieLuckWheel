@@ -32,6 +32,7 @@ const EnterPasswordScreen = () => {
         Mật khẩu
       </Text>
       <TextInput
+        keykeyboardType="numeric"
         secureTextEntry={true}
         style={{marginTop: 16}}
         label="Mật khẩu"
