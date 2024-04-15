@@ -3,8 +3,7 @@ import type {PayloadAction} from '@reduxjs/toolkit';
 
 interface AppState {
   rates: number[];
-  // isSavedPassword: boolean;
-  password: string | null;
+  location: string | undefined;
   imageRotation: string | undefined;
   imageBackground: string | undefined;
   giftImage: (string | undefined)[];
@@ -13,8 +12,7 @@ interface AppState {
 const initialState: AppState = {
   rates: [0, 25, 0, 25, 0, 25, 0, 25],
   imageBackground: undefined,
-  // isSavedPassword: false,
-  password: '123456789',
+  location: undefined,
   imageRotation: undefined,
   giftImage: [
     undefined,
@@ -32,16 +30,12 @@ export const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    // changeIsSavedPassword: (state, action: PayloadAction<boolean>) => {
-    //   state.isSavedPassword = action.payload;
-    // },
+    changeLocation: (state, action: PayloadAction<string>) => {
+      state.location = action.payload;
+    },
 
     changeRates: (state, action: PayloadAction<number[]>) => {
       state.rates = action.payload;
-    },
-
-    savePassword: (state, action: PayloadAction<string>) => {
-      state.password = action.payload;
     },
 
     changeImageRotation: (state, action: PayloadAction<string>) => {
@@ -59,11 +53,11 @@ export const appSlice = createSlice({
 });
 
 export const {
-  savePassword,
   changeImageRotation,
   changeImageCell,
   changeRates,
   changeImageBackground,
+  changeLocation,
 } = appSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type

@@ -4,7 +4,7 @@ import {PaperProvider} from 'react-native-paper';
 import {Provider} from 'react-redux';
 import {persistor, store} from './src/redux/store';
 import {PersistGate} from 'redux-persist/integration/react';
-import MainNavigator from './src/navigation/MainNavigator';
+import MainNavigator from './src/navigator/MainNavigator';
 
 const App = () => {
   return (

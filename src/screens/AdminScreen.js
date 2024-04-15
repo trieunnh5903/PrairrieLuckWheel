@@ -6,11 +6,12 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
+  Text,
   TextInput,
   View,
 } from 'react-native';
 import React, {useState} from 'react';
-import {Button, DataTable, Text} from 'react-native-paper';
+// import {Button, DataTable, Text} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../redux/store';
 import {
@@ -19,119 +20,119 @@ import {
   changeImageRotation,
   changeRates,
 } from '../redux/appSlice';
-import {screen_width} from '../constants';
+import {colors, globalStyle, screen_width} from '../constants';
 import {launchImageLibrary} from 'react-native-image-picker';
-import MyButton from '../component/MyButton';
+import {AppButton} from '../component';
 
 const AdminScreen = () => {
   const imageRoration = useAppSelector(state => state.imageRotation);
-  const storeImageGift = useAppSelector(state => state.giftImage);
+  const imageGift = useAppSelector(state => state.giftImage);
   const storeImageBackround = useAppSelector(state => state.imageBackground);
   const currRates = useAppSelector(state => state.rates);
 
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
 
-  const [errorMess, setErrorMess] = useState('');
-  const [rates, setRates] = useState(currRates);
-  const [rotationImage, setRotationImage] = useState(imageRoration);
-  const [imageGift, setImageGift] = useState(storeImageGift);
-  const [imageBackground, setImageBackground] = useState(storeImageBackround);
+  // const [errorMess, setErrorMess] = useState('');
+  // const [rates, setRates] = useState(currRates);
+  // const [rotationImage, setRotationImage] = useState(imageRoration);
+  // const [imageGift, setImageGift] = useState(storeImageGift);
+  // const [imageBackground, setImageBackground] = useState(storeImageBackround);
 
-  const onSubmitPress = () => {
-    const isValid = validate();
-    if (isValid) {
-      dispatch(changeRates(rates));
-      if (rotationImage) {
-        dispatch(changeImageRotation(rotationImage));
-      }
-      dispatch(changeImageCell(imageGift));
+  // const onSubmitPress = () => {
+  //   const isValid = validate();
+  //   if (isValid) {
+  //     dispatch(changeRates(rates));
+  //     if (rotationImage) {
+  //       dispatch(changeImageRotation(rotationImage));
+  //     }
+  //     dispatch(changeImageCell(imageGift));
 
-      if (imageBackground) {
-        dispatch(changeImageBackground(imageBackground));
-      }
-      navigation.navigate('Wheel');
-    }
-  };
+  //     if (imageBackground) {
+  //       dispatch(changeImageBackground(imageBackground));
+  //     }
+  //     navigation.navigate('Wheel');
+  //   }
+  // };
 
-  const validate = () => {
-    // CHECK NUMBER
-    for (let i = 0; i < rates.length; i++) {
-      if (isNaN(rates[i])) {
-        setErrorMess('Hãy nhập giá trị số');
-        Alert.alert('', 'Tỉ lệ phần quà là giá trị số');
-        return false;
-      }
-    }
+  // const validate = () => {
+  //   // CHECK NUMBER
+  //   for (let i = 0; i < rates.length; i++) {
+  //     if (isNaN(rates[i])) {
+  //       setErrorMess('Hãy nhập giá trị số');
+  //       Alert.alert('', 'Tỉ lệ phần quà là giá trị số');
+  //       return false;
+  //     }
+  //   }
 
-    // CHECK MIN MAX RATE
-    let totalRate = 0;
+  //   // CHECK MIN MAX RATE
+  //   let totalRate = 0;
 
-    for (let i = 0; i < rates.length; i++) {
-      if (i % 2 === 0) {
-        // Chỉ số chẵn
-        totalRate += rates[i];
-      }
-    }
-    if (totalRate > 50) {
-      setErrorMess('Tổng tỉ lệ phần quà không quá 50%');
-      Alert.alert('', 'Tổng tỉ lệ phần quà không quá 50%');
-      return false;
-    }
+  //   for (let i = 0; i < rates.length; i++) {
+  //     if (i % 2 === 0) {
+  //       // Chỉ số chẵn
+  //       totalRate += rates[i];
+  //     }
+  //   }
+  //   if (totalRate > 50) {
+  //     setErrorMess('Tổng tỉ lệ phần quà không quá 50%');
+  //     Alert.alert('', 'Tổng tỉ lệ phần quà không quá 50%');
+  //     return false;
+  //   }
 
-    if (!imageBackground) {
-      Alert.alert('', 'Ảnh nền đang trống');
-      return false;
-    }
+  //   if (!imageBackground) {
+  //     Alert.alert('', 'Ảnh nền đang trống');
+  //     return false;
+  //   }
 
-    if (!rotationImage) {
-      Alert.alert('', 'Ảnh vòng quay đang trống');
-      return false;
-    }
+  //   if (!rotationImage) {
+  //     Alert.alert('', 'Ảnh vòng quay đang trống');
+  //     return false;
+  //   }
 
-    // check image gift
-    for (let index = 0; index < imageGift.length; index++) {
-      const element = imageGift[index];
-      if (!element) {
-        Alert.alert('', 'Ảnh phần quà đang trống');
-        return false;
-      }
-    }
+  //   // check image gift
+  //   for (let index = 0; index < imageGift.length; index++) {
+  //     const element = imageGift[index];
+  //     if (!element) {
+  //       Alert.alert('', 'Ảnh phần quà đang trống');
+  //       return false;
+  //     }
+  //   }
 
-    setErrorMess('');
-    return true;
-  };
+  //   setErrorMess('');
+  //   return true;
+  // };
 
-  const onChangeText = (text, index) => {
-    let newRate = [...rates];
-    newRate[index] = text;
-    setRates(newRate);
-  };
+  // const onChangeText = (text, index) => {
+  //   let newRate = [...rates];
+  //   newRate[index] = text;
+  //   setRates(newRate);
+  // };
 
-  const onEndEditing = () => {
-    let newRate = rates.map(function (str) {
-      return parseFloat(str);
-    });
-    //total lucky rate
-    let totalRate = 0;
-    for (let i = 0; i < newRate.length; i++) {
-      if (i % 2 === 0) {
-        totalRate += parseFloat(newRate[i]);
-      }
-    }
-    const unluckyRate = (100 - totalRate) / 4;
-    newRate[1] = unluckyRate;
-    newRate[3] = unluckyRate;
-    newRate[5] = unluckyRate;
-    newRate[7] = unluckyRate;
-    setRates(newRate);
-  };
+  // const onEndEditing = () => {
+  //   let newRate = rates.map(function (str) {
+  //     return parseFloat(str);
+  //   });
+  //   //total lucky rate
+  //   let totalRate = 0;
+  //   for (let i = 0; i < newRate.length; i++) {
+  //     if (i % 2 === 0) {
+  //       totalRate += parseFloat(newRate[i]);
+  //     }
+  //   }
+  //   const unluckyRate = (100 - totalRate) / 4;
+  //   newRate[1] = unluckyRate;
+  //   newRate[3] = unluckyRate;
+  //   newRate[5] = unluckyRate;
+  //   newRate[7] = unluckyRate;
+  //   setRates(newRate);
+  // };
 
   const handleChangeImageSpin = async () => {
     const {assets} = await launchImageLibrary({mediaType: 'photo', quality: 1});
     if (assets) {
       const uri = assets[0].uri;
-      setRotationImage(uri);
+      dispatch(changeImageRotation(uri));
     }
   };
 
@@ -140,8 +141,13 @@ const AdminScreen = () => {
     if (assets) {
       const uri = assets[0].uri;
       let newGift = [...imageGift];
-      newGift[cellNumber] = uri;
-      setImageGift(newGift);
+      if (cellNumber === 1) {
+        newGift[1] = uri;
+        newGift[3] = uri;
+        newGift[5] = uri;
+        newGift[7] = uri;
+      }
+      dispatch(changeImageCell(imageGift));
     }
   };
 
@@ -149,7 +155,7 @@ const AdminScreen = () => {
     const {assets} = await launchImageLibrary({mediaType: 'photo', quality: 1});
     if (assets) {
       const uri = assets[0].uri;
-      setImageBackground(uri);
+      dispatch(changeImageBackground(uri));
     }
   };
 
@@ -157,23 +163,14 @@ const AdminScreen = () => {
     <KeyboardAvoidingView behavior="padding">
       <ScrollView>
         <Pressable
-          style={{backgroundColor: 'white'}}
+          style={{backgroundColor: colors.primary}}
           onPress={() => Keyboard.dismiss()}>
-          <View style={{padding: 20}}>
-            <Text style={styles.textTitle}>
-              Mô tả vòng quay (Các phần được đánh số thứ tự)
-            </Text>
-            <Image
-              source={require('../assets/image/tutorial.png')}
-              resizeMode="contain"
-              style={styles.imageTutorial}
-            />
-
-            <Text style={[styles.textTitle, styles.mt20]}>
+          <View style={{padding: 20, paddingTop: 0}}>
+            {/* <Text style={[styles.textTitle, styles.mt20]}>
               Tỉ lệ phần thưởng
-            </Text>
+            </Text> */}
 
-            <View style={styles.roundView}>
+            {/* <View style={styles.roundView}>
               <Image
                 source={require('../assets/image/round.png')}
                 resizeMode="contain"
@@ -203,9 +200,9 @@ const AdminScreen = () => {
               <Text style={[styles.roundTextRate8]}>
                 {rates[7].toString().slice(0, 5)}%
               </Text>
-            </View>
+            </View> */}
             {/* tabel */}
-            <DataTable>
+            {/* <DataTable>
               <DataTable.Header>
                 <DataTable.Title textStyle={styles.textTitle}>
                   Phần
@@ -244,15 +241,15 @@ const AdminScreen = () => {
                   </DataTable.Row>
                 );
               })}
-            </DataTable>
+            </DataTable> */}
             {/* background */}
-            <Text style={[styles.textTitle, styles.mt20]}>
-              Hình ảnh nền của vòng quay
+            <Text style={[globalStyle.textWhiteBold]}>
+              Hình ảnh background của vòng quay
             </Text>
             <View style={[styles.gift, styles.mt20]}>
-              {imageBackground ? (
+              {storeImageBackround ? (
                 <Image
-                  source={{uri: imageBackground}}
+                  source={{uri: storeImageBackround}}
                   resizeMode="contain"
                   style={{
                     width: screen_width * 0.6,
@@ -265,22 +262,19 @@ const AdminScreen = () => {
                 </View>
               )}
             </View>
-            <Button
+            <AppButton
               onPress={handleChangeBackground}
+              label="Thay đổi"
               style={{marginVertical: 20, alignSelf: 'flex-start'}}
-              mode="contained"
-              buttonColor="#a5ce3a"
-              textColor="black">
-              Thay đổi
-            </Button>
+            />
             {/* img spin */}
-            <Text style={[styles.textTitle, styles.mt20]}>
+            <Text style={[globalStyle.textWhiteBold, styles.mt20]}>
               Hình ảnh vòng quay
             </Text>
             <View style={[styles.gift, styles.mt20]}>
-              {rotationImage ? (
+              {imageRoration ? (
                 <Image
-                  source={{uri: rotationImage}}
+                  source={{uri: imageRoration}}
                   resizeMode="contain"
                   style={{
                     width: screen_width * 0.6,
@@ -293,23 +287,26 @@ const AdminScreen = () => {
                 </View>
               )}
             </View>
-            <Button
-              onPress={handleChangeImageSpin}
+            <AppButton
+              label="Thay đổi"
               style={{marginVertical: 20, alignSelf: 'flex-start'}}
-              mode="contained"
-              buttonColor="#a5ce3a"
-              textColor="black">
-              Thay đổi
-            </Button>
+              onPress={handleChangeImageSpin}
+            />
+
             {/* image gift */}
-            <Text style={[styles.textTitle, styles.mt20]}>
+            <Text style={[globalStyle.textWhiteBold, styles.mt20]}>
               Hình ảnh phần thưởng
             </Text>
             {/* cell 1 */}
             {imageGift.map((item, index) => {
+              if (index % 2 !== 0) {
+                return;
+              }
               return (
                 <View key={index}>
-                  <Text style={styles.subtitle}>Phần số {index + 1}</Text>
+                  <Text style={globalStyle.textWhiteBold}>
+                    Phần số {index + 1}
+                  </Text>
                   <View style={styles.giftWrapper}>
                     {item ? (
                       <Image
@@ -326,23 +323,50 @@ const AdminScreen = () => {
                       </View>
                     )}
                   </View>
-                  <MyButton
+                  <AppButton
                     label="Thay đổi"
                     onPress={() => handleChangeGift(index)}
+                    style={{marginVertical: 20, alignSelf: 'flex-start'}}
                   />
                 </View>
               );
             })}
 
+            {/* unlucky gift */}
+            <Text style={[globalStyle.textWhiteBold, styles.mt20]}>
+              Hình ảnh chúc may mắn lần sau
+            </Text>
+            <View style={styles.giftWrapper}>
+              {imageGift[1] ? (
+                <Image
+                  source={{uri: imageGift[1]}}
+                  resizeMode="contain"
+                  style={{
+                    width: screen_width * 0.6,
+                    height: screen_width * 0.6,
+                  }}
+                />
+              ) : (
+                <View style={styles.imageGift}>
+                  <Text style={styles.subtitle}>Trống</Text>
+                </View>
+              )}
+            </View>
+            <AppButton
+              label="Thay đổi"
+              onPress={() => handleChangeGift(1)}
+              style={{marginVertical: 20, alignSelf: 'flex-start'}}
+            />
+
             {/* submit */}
-            <Button
+            {/* <Button
               style={{margin: 20}}
               onPress={onSubmitPress}
               mode="contained"
               buttonColor="#a5ce3a"
               textColor="black">
               Đồng ý
-            </Button>
+            </Button> */}
           </View>
         </Pressable>
       </ScrollView>

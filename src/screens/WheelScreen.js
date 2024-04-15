@@ -215,18 +215,6 @@ const WheelScreen = ({navigation}) => {
           <Text>Trống</Text>
         )}
 
-        {/* <Animated.Image
-          source={require('../assets/image/bg_vqmm.png')}
-          style={[
-            {
-              width: screen_width * 0.8,
-              height: screen_width * 0.8,
-              borderRadius: screen_width,
-              backgroundColor: 'rgba(0,0,0,0.1)',
-            },
-            wheelAnimatedStyle,
-          ]}
-        /> */}
         <Pressable
           disabled={isAnimating}
           onPress={onStartPress}
