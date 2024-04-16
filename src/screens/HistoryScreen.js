@@ -101,7 +101,7 @@ const HistoryScreen = ({navigation}) => {
       if (!file) {
         return;
       }
-      // await sendMail(file);
+      await sendMail(file);
     } catch (error) {
       console.log('onSendPress', error);
     } finally {
@@ -170,7 +170,7 @@ const HistoryScreen = ({navigation}) => {
       const filePatch = await ScopedStorage.writeFile(
         prairieDir.uri,
         b64,
-        `${(location || '').toLowerCase()} xep_hinh ${formatDate(
+        `${(location || '').toLowerCase()} vong_quay_may_man ${formatDate(
           dateModalValue,
         )}.xlsx`,
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
