@@ -11,7 +11,6 @@ import {
   View,
 } from 'react-native';
 import React, {useState} from 'react';
-// import {Button, DataTable, Text} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../redux/store';
 import {
