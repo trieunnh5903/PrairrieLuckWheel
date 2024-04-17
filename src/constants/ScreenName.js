@@ -10,6 +10,7 @@ const ScreenName = {
   LocationScreen: 'location',
   StorageScreen: 'StorageScreen',
   RateScreen: 'RateScreen',
+  GiftScreen: 'GiftScreen',
 };
 
 export {ScreenName};

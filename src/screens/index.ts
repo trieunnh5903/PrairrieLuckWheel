@@ -8,7 +8,9 @@ import ManagerScreen from './ManagerScreen';
 import RateScreen from './RateScreen';
 import LocationScreen from './LocationScreen';
 import StorageScreen from './StorageScreen';
+import GiftScreen from './GiftScreen';
 export {
+  GiftScreen,
   StorageScreen,
   LocationScreen,
   RateScreen,

@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {
-  MAIL,
+  CustomerKey,
+  EMAIL,
   ScreenName,
   colors,
   globalStyle,
@@ -119,8 +120,8 @@ const HistoryScreen = ({navigation}) => {
           subject: `${location || 'Thiếu'} (${formatDate(
             dateModalValue,
           )}) - Báo cáo lịch sử chơi game vòng quay may mắn`,
-          recipients: [MAIL],
-          body: `Báo cáo lịch sử chơi game vòng quay may mắn \n Cửa hàng: ${location} \n Ngày: ${formatDate(
+          recipients: [EMAIL],
+          body: `Báo cáo lịch sử chơi game vòng quay may mắn \n Điểm bán: ${location} \n Ngày: ${formatDate(
             dateModalValue,
           )} `,
           customChooserTitle: 'Báo cáo lịch sử chơi game vòng quay may mắn',
@@ -147,26 +148,24 @@ const HistoryScreen = ({navigation}) => {
     try {
       // generate data
       const workbook = await generateDataXlsx();
+      // console.log(workbook);
       if (!workbook) {
         Alert.alert('Thông báo', 'Dữ liệu trống');
         return;
       }
       const b64 = XLSX.write(workbook, {type: 'base64', bookType: 'xlsx'});
-
       // check prairie dir
       const dir = await storage.getObject(storageKey.userDataDirectory);
       if (!dir) {
         return;
       }
-
       const dirName = 'Prairie Lucky Wheel';
+      // console.log('dir', dir);
       const listFile = await ScopedStorage.listFiles(dir.uri);
       const existedDir = listFile.find(i => i.name === dirName);
-
       const prairieDir = !existedDir
         ? await ScopedStorage.createDirectory(dir.uri, dirName)
         : existedDir;
-
       const filePatch = await ScopedStorage.writeFile(
         prairieDir.uri,
         b64,
@@ -176,12 +175,10 @@ const HistoryScreen = ({navigation}) => {
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         'base64',
       );
-
       const file = {
         uri: filePatch,
         mime: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       };
-
       return file;
     } catch (error) {
       console.log('exportFile', error);
@@ -193,7 +190,7 @@ const HistoryScreen = ({navigation}) => {
       // get data in async storage
       const customerList = await storage.getObject(storageKey.customerList);
       const filteredCustomerList = await customerList.filter(item => {
-        return item['Ngay tao'].startsWith(formatDate(dateModalValue));
+        return item[CustomerKey.NGAY] === formatDate(dateModalValue);
       });
       // console.log('filteredCustomerList', filteredCustomerList);
       if (filteredCustomerList.length === 0) {

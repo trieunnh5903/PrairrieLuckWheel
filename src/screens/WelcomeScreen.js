@@ -19,17 +19,17 @@ const WelcomeScreen = ({navigation}) => {
   const storeImageBackround = useAppSelector(state => state.imageBackground);
   const [pressCount, setPressCount] = useState(0);
 
-  useEffect(() => {
-    if (!rates || !storeImageGift || !rotateImage || !storeImageBackround) {
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 1,
-          routes: [{name: ScreenName.PasswordScreen}],
-        }),
-      );
-    }
-    return () => {};
-  }, [navigation, rates, rotateImage, storeImageBackround, storeImageGift]);
+  // useEffect(() => {
+  //   if (!rates || !storeImageGift || !rotateImage || !storeImageBackround) {
+  //     navigation.dispatch(
+  //       CommonActions.reset({
+  //         index: 1,
+  //         routes: [{name: ScreenName.PasswordScreen}],
+  //       }),
+  //     );
+  //   }
+  //   return () => {};
+  // }, [navigation, rates, rotateImage, storeImageBackround, storeImageGift]);
 
   const onSettingPress = () => {
     setPressCount(pressCount + 1);

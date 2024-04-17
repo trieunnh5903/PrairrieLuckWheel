@@ -6,7 +6,8 @@ interface AppState {
   location: string | undefined;
   imageRotation: string | undefined;
   imageBackground: string | undefined;
-  giftImage: (string | undefined)[];
+  gifts: ({name: string; uri: string} | undefined)[];
+  giftResult: {name: string; uri: string} | undefined;
 }
 
 const initialState: AppState = {
@@ -14,7 +15,7 @@ const initialState: AppState = {
   imageBackground: undefined,
   location: undefined,
   imageRotation: undefined,
-  giftImage: [
+  gifts: [
     undefined,
     undefined,
     undefined,
@@ -24,6 +25,7 @@ const initialState: AppState = {
     undefined,
     undefined,
   ],
+  giftResult: undefined,
 };
 
 export const appSlice = createSlice({
@@ -42,19 +44,33 @@ export const appSlice = createSlice({
       state.imageRotation = action.payload;
     },
 
-    changeImageCell: (state, action: PayloadAction<(string | undefined)[]>) => {
-      state.giftImage = action.payload;
+    changeGifts: (
+      state,
+      action: PayloadAction<{name: string; uri: string}[]>,
+    ) => {
+      state.gifts = action.payload;
     },
 
     changeImageBackground: (state, action: PayloadAction<string>) => {
       state.imageBackground = action.payload;
+    },
+
+    changeGiftResult: (
+      state,
+      action: PayloadAction<{
+        name: string;
+        uri: string;
+      }>,
+    ) => {
+      state.giftResult = action.payload;
     },
   },
 });
 
 export const {
   changeImageRotation,
-  changeImageCell,
+  changeGifts,
+  changeGiftResult,
   changeRates,
   changeImageBackground,
   changeLocation,

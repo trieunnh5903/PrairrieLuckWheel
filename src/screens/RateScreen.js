@@ -72,7 +72,7 @@ const RateScreen = ({navigation}) => {
       return;
     }
     return (
-      <View key={item} style={styles.row}>
+      <View key={'tir lej' + index} style={styles.row}>
         <Text style={styles.column}>{index + 1}</Text>
         <View style={styles.column}>
           <TextInput
