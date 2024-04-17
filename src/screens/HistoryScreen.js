@@ -65,7 +65,7 @@ const HistoryScreen = ({navigation}) => {
 
   const checkLocation = () => {
     if (!location) {
-      Alert.alert('Thông báo', 'Điểm cửa hàng thiếu');
+      Alert.alert('Thông báo', 'Điểm bán thiếu');
       return false;
     }
     return true;
@@ -77,7 +77,7 @@ const HistoryScreen = ({navigation}) => {
       if (persistedUris.length > 0) {
         return true;
       }
-      Alert.alert('Lỗi', 'Ứng dụng không có quyền truy cập vào bộ nhớ');
+      Alert.alert('Thông báo', 'Ứng dụng không có quyền truy cập vào bộ nhớ');
       return false;
     } catch (error) {
       console.log('checkPermission', error);

@@ -20,7 +20,6 @@ const StorageScreen = () => {
 
   const requestStoragePermission = async () => {
     try {
-      // const dirName = 'Prairie Lucky Wheel';
       const dir = await ScopedStorage.openDocumentTree(true);
       if (!dir) {
         // User cancelled

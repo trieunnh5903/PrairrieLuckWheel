@@ -43,12 +43,12 @@ const CustomerInfoScreen = ({navigation}) => {
 
   const handleSubmit = () => {
     if (!invoiceCode || !customerName || !phoneNumber) {
-      Alert.alert('Lỗi', 'Vui lòng điền vào tất cả các trường.');
+      Alert.alert('Thông báo', 'Vui lòng điền vào tất cả các trường.');
     } else if (!isValidPhoneNumber(phoneNumber)) {
-      Alert.alert('Lỗi', 'Xin vui lòng nhập một số điện thoại hợp lệ.');
+      Alert.alert('Thông báo', 'Xin vui lòng nhập một số điện thoại hợp lệ.');
     } else if (isDuplicateInvoiceCode(invoiceCode)) {
       Alert.alert(
-        'Lỗi',
+        'Thông báo',
         'Mã hóa đơn đã sử dụng. Vui lòng sử dụng một mã khác.',
       );
     } else {
@@ -58,23 +58,6 @@ const CustomerInfoScreen = ({navigation}) => {
 
   const saveCustomerInformation = async () => {
     try {
-      // // Lấy ngày, tháng, năm
-      // const date = new Date();
-      // const day = date.getDate();
-      // const month = date.getMonth() + 1;
-      // const year = date.getFullYear();
-      // // Lấy giờ, phút, giây
-      // const hours = date.getHours();
-      // const minutes = date.getMinutes();
-      // const seconds = date.getSeconds();
-      // const formattedDateTime = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
-
-      // const newCustomer = {
-      //   ['Ma hoa don']: invoiceCode,
-      //   ['Ten khach hang']: customerName,
-      //   ['So dien thoai']: phoneNumber,
-      //   ['Ngay tao']: formattedDateTime,
-      // };
       const newCustomer = {
         [CustomerKey.STT]: (customerList.length + 1).toString(),
         [CustomerKey.NGAY]: formatDate(new Date()),

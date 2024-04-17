@@ -1,4 +1,5 @@
 import {
+  Alert,
   Dimensions,
   Image,
   Pressable,
@@ -8,28 +9,16 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useAppSelector} from '../redux/store';
-import {CommonActions} from '@react-navigation/native';
 import {ScreenName} from '../constants';
+import * as ScopedStorage from 'react-native-scoped-storage';
 
 const {height, width} = Dimensions.get('window');
 const WelcomeScreen = ({navigation}) => {
-  const rates = useAppSelector(state => state.rates);
-  const storeImageGift = useAppSelector(state => state.giftImage);
   const rotateImage = useAppSelector(state => state.imageRotation);
   const storeImageBackround = useAppSelector(state => state.imageBackground);
+  const location = useAppSelector(state => state.location);
+  const gifts = useAppSelector(state => state.gifts);
   const [pressCount, setPressCount] = useState(0);
-
-  // useEffect(() => {
-  //   if (!rates || !storeImageGift || !rotateImage || !storeImageBackround) {
-  //     navigation.dispatch(
-  //       CommonActions.reset({
-  //         index: 1,
-  //         routes: [{name: ScreenName.PasswordScreen}],
-  //       }),
-  //     );
-  //   }
-  //   return () => {};
-  // }, [navigation, rates, rotateImage, storeImageBackround, storeImageGift]);
 
   const onSettingPress = () => {
     setPressCount(pressCount + 1);
@@ -42,6 +31,47 @@ const WelcomeScreen = ({navigation}) => {
     }, 3000);
   };
 
+  const onPlayPress = async () => {
+    const result = await checkData();
+    if (result) {
+      navigation.navigate(ScreenName.CustomerInfoScreen);
+    }
+  };
+
+  const checkData = async () => {
+    try {
+      let messaage = '';
+      const persistedUris = await ScopedStorage.getPersistedUriPermissions();
+      if (persistedUris.length === 0) {
+        messaage = 'Thư mục lưu trữ trống';
+      } else if (!rotateImage) {
+        messaage = 'Ảnh vòng quay đang trống';
+      } else if (!storeImageBackround) {
+        messaage = 'Ảnh nền vòng quay đang trống';
+      } else if (!location) {
+        messaage = 'Điểm bán trống';
+      } else {
+        for (let index = 0; index < gifts.length; index++) {
+          const element = gifts[index];
+          if (!element) {
+            messaage = 'Ảnh phần quà trống';
+            break;
+          }
+          if (index % 2 === 0) {
+            if (!element.name) {
+              messaage = 'Tên phần quà trống';
+              break;
+            }
+          }
+        }
+      }
+      if (messaage) {
+        Alert.alert('Thông báo', messaage);
+        return false;
+      }
+      return true;
+    } catch (error) {}
+  };
   return (
     <View style={{flex: 1}}>
       <Image
@@ -49,9 +79,7 @@ const WelcomeScreen = ({navigation}) => {
         style={{width, height}}
         source={require('../assets/image/z5176770054393_b848428422d9132de84ee41669ed09d7.jpg')}
       />
-      <TouchableOpacity
-        onPress={() => navigation.navigate(ScreenName.CustomerInfoScreen)}
-        style={styles.btnPlay}>
+      <TouchableOpacity onPress={onPlayPress} style={styles.btnPlay}>
         <Image
           resizeMode="contain"
           style={{

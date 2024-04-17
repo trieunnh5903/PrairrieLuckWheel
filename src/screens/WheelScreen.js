@@ -4,6 +4,7 @@ import {
   Pressable,
   StyleSheet,
   View,
+  Text,
 } from 'react-native';
 import React, {useState} from 'react';
 import Animated, {
@@ -17,7 +18,6 @@ import Animated, {
   withSequence,
   withTiming,
 } from 'react-native-reanimated';
-import {Text} from 'react-native-paper';
 import {useAppDispatch, useAppSelector} from '../redux/store';
 import {CustomerKey, ScreenName, storageKey} from '../constants';
 import {getTimeNow, storage} from '../utils';
