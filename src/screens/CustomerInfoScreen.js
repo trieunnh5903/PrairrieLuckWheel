@@ -51,6 +51,8 @@ const CustomerInfoScreen = ({navigation}) => {
         'Thông báo',
         'Mã hóa đơn đã sử dụng. Vui lòng sử dụng một mã khác.',
       );
+    } else if (!isValidInvoiceCode(invoiceCode)) {
+      Alert.alert('Lỗi', 'Mã hóa đơn chứa 7 số');
     } else {
       saveCustomerInformation();
     }
@@ -60,7 +62,7 @@ const CustomerInfoScreen = ({navigation}) => {
     try {
       const newCustomer = {
         [CustomerKey.STT]: (customerList.length + 1).toString(),
-        [CustomerKey.NGAY]: formatDate(new Date()),
+        [CustomerKey.NGAY]: new Date(),
         [CustomerKey.MA_HD]: invoiceCode,
         [CustomerKey.BAT_DAU]: '',
         [CustomerKey.KET_THUC]: '',
@@ -90,6 +92,10 @@ const CustomerInfoScreen = ({navigation}) => {
 
   const isValidPhoneNumber = phoneNumber => {
     return /^0\d{9}$/.test(phoneNumber);
+  };
+
+  const isValidInvoiceCode = code => {
+    return /^\d{7}$/.test(code);
   };
 
   return (

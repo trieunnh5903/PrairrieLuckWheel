@@ -2,6 +2,7 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {
   AdminScreen,
+  ChangePassword,
   CustomerInfoScreen,
   GiftScreen,
   HistoryScreen,
@@ -9,6 +10,7 @@ import {
   ManagerScreen,
   RateScreen,
   SignInScreen,
+  StandByImage,
   StorageScreen,
   WelcomeScreen,
   WheelScreen,
@@ -18,7 +20,6 @@ import {ScreenName, colors} from '../constants';
 const Stack = createNativeStackNavigator();
 
 LogBox.ignoreAllLogs();
-// LogBox.ignoreAllLogs();
 const MainNavigator = () => {
   return (
     <Stack.Navigator
@@ -70,6 +71,18 @@ const MainNavigator = () => {
       <Stack.Screen
         name={ScreenName.StorageScreen}
         component={StorageScreen}
+        options={{headerShown: true}}
+      />
+
+      <Stack.Screen
+        name={ScreenName.StandByImage}
+        component={StandByImage}
+        options={{headerShown: true}}
+      />
+
+      <Stack.Screen
+        name={ScreenName.ChangePassword}
+        component={ChangePassword}
         options={{headerShown: true}}
       />
 

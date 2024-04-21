@@ -4,10 +4,12 @@ import type {PayloadAction} from '@reduxjs/toolkit';
 interface AppState {
   rates: number[];
   location: string | undefined;
+  standByBackground: string | undefined;
   imageRotation: string | undefined;
   imageBackground: string | undefined;
   gifts: ({name: string; uri: string} | undefined)[];
   giftResult: {name: string; uri: string} | undefined;
+  password: string;
 }
 
 const initialState: AppState = {
@@ -26,12 +28,21 @@ const initialState: AppState = {
     undefined,
   ],
   giftResult: undefined,
+  standByBackground: '',
+  password: '123456789',
 };
 
 export const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
+    changePassword: (state, action: PayloadAction<string>) => {
+      state.password = action.payload;
+    },
+    changeStanByBackground: (state, action: PayloadAction<string>) => {
+      state.standByBackground = action.payload;
+    },
+
     changeLocation: (state, action: PayloadAction<string>) => {
       state.location = action.payload;
     },
@@ -68,6 +79,8 @@ export const appSlice = createSlice({
 });
 
 export const {
+  changePassword,
+  changeStanByBackground,
   changeImageRotation,
   changeGifts,
   changeGiftResult,

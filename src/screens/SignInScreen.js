@@ -2,15 +2,16 @@ import {Keyboard, Pressable, Text} from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {AppButton, AppTextInput} from '../component';
-import {PASSWORD, ScreenName, globalStyle} from '../constants';
+import {ScreenName, globalStyle} from '../constants';
+import {useAppSelector} from '../redux/store';
 
 const EnterPasswordScreen = () => {
   const navigation = useNavigation();
-
+  const correctPassword = useAppSelector(state => state.password);
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const onPress = async () => {
-    if (password !== PASSWORD) {
+    if (password !== correctPassword) {
       setError('Mật khẩu không đúng');
       return;
     }

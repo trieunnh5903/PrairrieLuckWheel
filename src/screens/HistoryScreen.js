@@ -189,9 +189,13 @@ const HistoryScreen = ({navigation}) => {
     try {
       // get data in async storage
       const customerList = await storage.getObject(storageKey.customerList);
-      const filteredCustomerList = await customerList.filter(item => {
-        return item[CustomerKey.NGAY] === formatDate(dateModalValue);
-      });
+      const filteredCustomerList = customerList.reduce((acc, item) => {
+        const date = new Date(item[CustomerKey.NGAY]);
+        if (date.getDate() === dateModalValue.getDate()) {
+          acc.push({...item, [CustomerKey.NGAY]: formatDate(dateModalValue)});
+        }
+        return acc;
+      }, []);
       // console.log('filteredCustomerList', filteredCustomerList);
       if (filteredCustomerList.length === 0) {
         return null;

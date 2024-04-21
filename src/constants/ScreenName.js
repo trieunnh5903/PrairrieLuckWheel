@@ -11,6 +11,8 @@ const ScreenName = {
   StorageScreen: 'StorageScreen',
   RateScreen: 'RateScreen',
   GiftScreen: 'GiftScreen',
+  StandByImage: 'StandByImage',
+  ChangePassword: 'ChangePassword',
 };
 
 export {ScreenName};

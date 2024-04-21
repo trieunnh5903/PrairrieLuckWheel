@@ -8,8 +8,12 @@ import ManagerScreen from './ManagerScreen';
 import RateScreen from './RateScreen';
 import LocationScreen from './LocationScreen';
 import StorageScreen from './StorageScreen';
+import StandByImage from './StandByImage';
 import GiftScreen from './GiftScreen';
+import ChangePassword from './ChangePassword';
 export {
+  ChangePassword,
+  StandByImage,
   GiftScreen,
   StorageScreen,
   LocationScreen,

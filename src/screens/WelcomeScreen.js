@@ -19,6 +19,7 @@ const WelcomeScreen = ({navigation}) => {
   const location = useAppSelector(state => state.location);
   const gifts = useAppSelector(state => state.gifts);
   const [pressCount, setPressCount] = useState(0);
+  const standByBackground = useAppSelector(state => state.standByBackground);
 
   const onSettingPress = () => {
     setPressCount(pressCount + 1);
@@ -77,7 +78,11 @@ const WelcomeScreen = ({navigation}) => {
       <Image
         resizeMode="cover"
         style={{width, height}}
-        source={require('../assets/image/z5176770054393_b848428422d9132de84ee41669ed09d7.jpg')}
+        source={
+          standByBackground
+            ? {uri: standByBackground}
+            : require('../assets/image/z5176770054393_b848428422d9132de84ee41669ed09d7.jpg')
+        }
       />
       <TouchableOpacity onPress={onPlayPress} style={styles.btnPlay}>
         <Image

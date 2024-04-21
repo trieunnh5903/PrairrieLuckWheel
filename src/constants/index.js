@@ -1,6 +1,7 @@
 import {Dimensions} from 'react-native';
-export const EMAIL = 'nguyennhathaitrieu5903@gmail.com';
-export const PASSWORD = '123456789';
+// export const EMAIL = 'nguyennhathaitrieu5903@gmail.com';
+export const EMAIL = 'baocao9987@gmail.com';
+
 const colors = {
   primary: '#7e9d38',
 };
